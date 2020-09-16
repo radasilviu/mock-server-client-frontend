@@ -7,9 +7,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainPageComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+    this.baseUrl = 'http://';
+  }
+
+  baseUrl: string;
+  clientId: string;
+  clientSecret: string;
 
   ngOnInit(): void {
+  }
+
+  goToUrl(): void {
+    window.location.href = this.baseUrl + this.clientId + this.clientSecret;
   }
 
 }
