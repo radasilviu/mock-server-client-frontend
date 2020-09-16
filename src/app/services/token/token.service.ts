@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
+import {BehaviorSubject, Observable, throwError} from 'rxjs';
 import {Token} from '../../models/token';
 import {Env} from '../../configs/env';
 import {catchError, tap} from 'rxjs/operators';
 import * as moment from 'moment';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenService {
 
-  constructor(private http: HttpClient) { }
+  tokenSubject = new BehaviorSubject<Token>(JSON.parse(localStorage.getItem('token')));
+
+  constructor(private http: HttpClient, private router: Router) { }
 
   getAccessToken(): Observable<Token> {
     const url = Env.authServerRootURL + '/api/oauth/token';
@@ -28,7 +31,9 @@ export class TokenService {
       tap(token => {
         const expiresAt = moment().add(token.expiresIn, 'seconds');
         localStorage.setItem('token', JSON.stringify(token));
-        localStorage.setItem('expiresAt', expiresAt.valueOf().toString());
+        token.accessTokenExpirationTime = moment().add(token.expiresIn, 'seconds').unix();
+
+        this.tokenSubject.next(token);
       }),
       catchError(this.handleError)
     );
@@ -44,6 +49,12 @@ export class TokenService {
 
   parseAccessToken(): string {
     return JSON.parse(localStorage.getItem('token')).access_token;
+  }
+
+  logout(): Promise<boolean> {
+    localStorage.clear();
+    this.tokenSubject.next(null);
+    return this.router.navigate(['']);
   }
 
 }
