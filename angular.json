@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "mock-server-client-frontend"
+    }
+  },
+  "defaultProject": "mock-server-client-frontend",
+  "cli": {
+    "analytics": "24624e1f-9cb6-47d3-875b-46f9bdf2692f"
+  }
 }
