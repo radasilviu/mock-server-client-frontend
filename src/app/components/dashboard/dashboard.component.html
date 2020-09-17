@@ -1,1 +1,12 @@
-<p>dashboard works!</p>
+<table>
+  <thead>
+  <tr>
+    <th *ngFor="let head of headers">{{head}}</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let row of items">
+    <td *ngFor="let col of row">{{col}}</td>
+  </tr>
+  </tbody>
+</table>

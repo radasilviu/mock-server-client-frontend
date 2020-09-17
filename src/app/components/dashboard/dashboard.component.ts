@@ -9,7 +9,20 @@ export class DashboardComponent implements OnInit {
 
   constructor() { }
 
+  items: string[][];
+  headers: string[];
+
   ngOnInit(): void {
+    this.initializeTable();
+  }
+
+  private initializeTable(): void{
+    this.headers = ['Id', 'Country', 'isReal'];
+    this.items = [
+      ['1', 'Romania', 'yes'],
+      ['2', 'Chad', 'yes'],
+      ['3', 'Germany', 'yes']
+    ];
   }
 
 }
