@@ -25,4 +25,12 @@ export class DashboardComponent implements OnInit {
     ];
   }
 
+  removeEntry(id: string): void{
+  console.log(id);
+  }
+
+  editEntry(id: string): void{
+
+  }
+
 }
