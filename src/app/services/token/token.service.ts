@@ -17,13 +17,9 @@ export class TokenService {
   constructor(private http: HttpClient, private router: Router) { }
 
   getAccessToken(code: string): Observable<Token> {
-    const url = Env.authServerRootURL + '/oauth/token';
-
-    // TO DO: Remove hardcoded values
+    const url = Env.authServerAPIRootURL + '/oauth/token';
     const body = {
-      clientCode: code,
-      username: 'test1',
-      password: '1q2w3e4r'
+      clientCode: code
     };
 
     return this.http.post<Token>(url, body).pipe(

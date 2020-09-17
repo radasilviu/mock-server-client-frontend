@@ -1,7 +1,7 @@
 export class SampleEnv {
   static resourceServerRootURL: string;
-  static authServerRootURL: string;
-  static authServerLoginFormURL: string;
+  static authServerAPIRootURL: string;
+  static authServerFrontendRootURL: string;
   static clientId: string;
   static clientSecret: string;
 }

@@ -16,25 +16,30 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private tokenService: TokenService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+
     const token = this.tokenService.tokenSubject.getValue();
-    const now = moment();
+    return next.handle(this.addAuthorizationHeader(request, token));
 
-    if (token && now.unix() < token.accessTokenExpirationTime) {
-      return next.handle(this.addAuthorizationHeader(request, token));
-    } else if (request.url.endsWith('token')) {
-      return next.handle(request);
-    } else {
-      // TO DO: Refresh the token
-      console.error('Should refresh token');
-    }
+    /* TO DO
+const now = moment();
 
-    console.error('This should only be called with refresh Token');
-    return EMPTY;
+if (token && now.unix() < token.accessTokenExpirationTime) {
+  return next.handle(this.addAuthorizationHeader(request, token));
+} else if (request.url.endsWith('token')) {
+  return next.handle(request);
+} else {
+  // TO DO: Refresh the token
+  console.error('Should refresh token');
+}
+
+console.error('This should only be called with refresh Token');
+return EMPTY;
+*/
   }
 
   addAuthorizationHeader(request, token: Token): any {
     return request.clone({
-      headers: request.headers.set('Authorization', `Bearer ${token.access_token}`)
+      headers: request.headers.set('Authorization', `${token.access_token}`)
     });
   }
 

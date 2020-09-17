@@ -10,15 +10,16 @@ import {UserService} from '../../services/user/user.service';
 export class DashboardComponent implements OnInit {
 
   users: Array<User>;
+  secret: string;
 
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
     this.userService
-      .getUsers()
+      .getSecret()
       .subscribe(
-      users => {
-        this.users = users;
+      secret => {
+        this.secret = secret.content;
       }
     );
   }

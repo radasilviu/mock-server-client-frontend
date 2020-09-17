@@ -4,14 +4,23 @@ import {DashboardComponent} from '../../components/dashboard/dashboard.component
 import {AuthGuard} from '../../guards/auth/auth.guard';
 import {MainPageComponent} from '../../main-page/main-page.component';
 import {SecretPageComponent} from '../../secret-page/secret-page.component';
+import {DashboardGuard} from '../../guards/dashboard/dashboard.guard';
 
 const routes: Routes = [
   {
-    path: 'dashboard', component: DashboardComponent,
+    path: 'dashboard',
+    component: DashboardComponent,
     canActivate: [AuthGuard]
   },
-  { path: '', component: MainPageComponent },
-  { path: 'secret', component: SecretPageComponent },
+  {
+    path: '',
+    component: MainPageComponent,
+    canActivate: [DashboardGuard]
+  },
+  {
+    path: 'secret',
+    component: SecretPageComponent
+  },
 ];
 
 @NgModule({
