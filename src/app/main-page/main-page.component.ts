@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import * as Rx from 'rxjs';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Env} from '../configs/env';
+import {TokenService} from '../services/token/token.service';
 
 @Component({
   selector: 'app-main-page',
@@ -10,12 +10,20 @@ import {Env} from '../configs/env';
 })
 export class MainPageComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute) {}
+  isLoggingIn = false;
 
+  constructor(private route: ActivatedRoute, private tokenService: TokenService, private router: Router) {}
 
   ngOnInit(): void {
-    if (this.route.snapshot.queryParams.authToken) {
-
+    const code = this.route.snapshot.queryParamMap.get('code');
+    if (code) {
+      this.isLoggingIn = true;
+      this.tokenService
+        .getAccessToken(code)
+        .subscribe(token => {
+          this.router.navigate(['dashboard']);
+        }
+      );
     }
   }
 

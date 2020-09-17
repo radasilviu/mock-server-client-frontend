@@ -1,2 +1,7 @@
-<p> This works! </p>
-<button (click)="login()" type="button">Login</button>
+<button *ngIf="!isLoggingIn" (click)="login()" type="button">Login</button>
+
+<div *ngIf="isLoggingIn" class="container">
+  <p>
+    Logging in ...
+  </p>
+</div>

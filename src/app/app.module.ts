@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppRoutingModule } from './app-routing.module';
+import { RoutingModule } from './modules/routing/routing.module';
 import { AppComponent } from './app.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { SecretPageComponent } from './secret-page/secret-page.component';
@@ -20,7 +20,7 @@ import {AuthInterceptor} from './interceptors/auth/auth.interceptor';
   imports: [
     HttpClientModule,
     BrowserModule,
-    AppRoutingModule
+    RoutingModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

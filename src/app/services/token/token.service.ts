@@ -12,33 +12,29 @@ import {Router} from '@angular/router';
 })
 export class TokenService {
 
-  tokenSubject = new BehaviorSubject<Token>(JSON.parse(localStorage.getItem('token')));
+  tokenSubject = new BehaviorSubject<Token>(this.parseToken());
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  getAccessToken(): Observable<Token> {
-    const url = Env.authServerRootURL + '/api/oauth/token';
+  getAccessToken(code: string): Observable<Token> {
+    const url = Env.authServerRootURL + '/oauth/token';
 
+    // TO DO: Remove hardcoded values
     const body = {
-      grant_type: 'authorization',
-      client_id: Env.clientId,
-      client_secret: Env.clientSecret,
-      code: localStorage.getItem('code'),
-      scope: ''
+      clientCode: code,
+      username: 'test1',
+      password: '1q2w3e4r'
     };
 
     return this.http.post<Token>(url, body).pipe(
       tap(token => {
-        const expiresAt = moment().add(token.expiresIn, 'seconds');
         localStorage.setItem('token', JSON.stringify(token));
-        token.accessTokenExpirationTime = moment().add(token.expiresIn, 'seconds').unix();
+        token.accessTokenExpirationTime = moment().add(token.expireTime, 'seconds').unix();
 
         this.tokenSubject.next(token);
       }),
       catchError(this.handleError)
     );
-
-    return null;
   }
 
   handleError(error: HttpErrorResponse): Observable<never> {
@@ -47,8 +43,8 @@ export class TokenService {
       'Something bad happened; please try again later.');
   }
 
-  parseAccessToken(): string {
-    return JSON.parse(localStorage.getItem('token')).access_token;
+  parseToken(): Token {
+    return JSON.parse(localStorage.getItem('token'));
   }
 
   logout(): Promise<boolean> {

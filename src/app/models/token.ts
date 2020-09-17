@@ -1,6 +1,6 @@
 export interface Token {
-  accessToken: string;
-  expiresIn: number;
+  access_token: string;
+  expireTime: number;
   refreshToken: string;
   refreshExpiresIn: number;
   accessTokenExpirationTime: number;
