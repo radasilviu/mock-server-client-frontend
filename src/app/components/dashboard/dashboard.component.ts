@@ -9,20 +9,27 @@ export class DashboardComponent implements OnInit {
 
   constructor() { }
 
-  items: string[][];
-  headers: string[];
+  tableContent: string[][];
+  tableHeaders: string[];
 
   ngOnInit(): void {
     this.initializeTable();
   }
 
   private initializeTable(): void{
-    this.headers = ['Id', 'Country', 'isReal'];
-    this.items = [
-      ['1', 'Romania', 'yes'],
-      ['2', 'Chad', 'yes'],
-      ['3', 'Germany', 'yes']
-    ];
+    this.tableHeaders = getTableHeaders();
+    this.tableContent = getTableContent();
+
+    function getTableContent(): string[][] {
+      return [
+        ['1', 'Romania', 'yes'],
+        ['2', 'Chad', 'yes'],
+        ['3', 'Germany', 'yes']
+      ];
+    }
+    function getTableHeaders(): string[] {
+      return ['Id', 'Country', 'isReal'];
+    }
   }
 
   removeEntry(id: string): void{

@@ -1,11 +1,11 @@
 <table>
   <thead>
   <tr>
-    <th *ngFor="let head of headers">{{head}}</th>
+    <th *ngFor="let head of tableHeaders">{{head}}</th>
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let row of items">
+  <tr *ngFor="let row of tableContent">
     <td *ngFor="let col of row">{{col}}</td>
     <td><button (click)="editEntry(row[0])">Edit</button></td>
     <td><button (click)="removeEntry(row[0])">Remove</button></td>
