@@ -9,8 +9,8 @@ export class DashboardComponent implements OnInit {
 
   constructor() { }
 
-  private items: string[][];
-  private headers: string[];
+  items: string[][];
+  headers: string[];
 
   ngOnInit(): void {
     this.initializeTable();
