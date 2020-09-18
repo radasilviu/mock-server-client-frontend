@@ -18,23 +18,12 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
     const token = this.tokenService.tokenSubject.getValue();
-    return next.handle(this.addAuthorizationHeader(request, token));
 
-    /* TO DO
-const now = moment();
-
-if (token && now.unix() < token.accessTokenExpirationTime) {
-  return next.handle(this.addAuthorizationHeader(request, token));
-} else if (request.url.endsWith('token')) {
-  return next.handle(request);
-} else {
-  // TO DO: Refresh the token
-  console.error('Should refresh token');
-}
-
-console.error('This should only be called with refresh Token');
-return EMPTY;
-*/
+    if (token) {
+      return next.handle(this.addAuthorizationHeader(request, token));
+    } else {
+      return next.handle(request);
+    }
   }
 
   addAuthorizationHeader(request, token: Token): any {
