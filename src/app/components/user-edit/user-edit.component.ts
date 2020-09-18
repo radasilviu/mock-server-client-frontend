@@ -9,14 +9,9 @@ import {User} from '../../models/user';
 })
 export class UserEditComponent implements OnInit {
 
-  constructor(private service: DashboardService) { }
+  constructor() { }
 
-  // items = [{name: 'jean', surname: 'kruger'}, {name: 'bobby', surname: 'marais'}];
-  items: any[] = [];
   ngOnInit(): void {
-    this.service.readFromFile().subscribe(
-      x => this.items = JSON.parse(x).data
-    );
   }
 
 }

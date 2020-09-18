@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {DashboardService} from '../../services/dashboard/dashboard.service';
-import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,7 +21,6 @@ export class DashboardComponent implements OnInit {
   }
   private setTableData(tableData: string): void{
     this.items = JSON.parse(tableData).data;
-    console.log(this.items[1]);
   }
   removeEntry(entry: any): void {
     console.log(entry);
