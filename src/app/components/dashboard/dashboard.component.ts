@@ -9,8 +9,7 @@ import {Observable} from 'rxjs';
 })
 export class DashboardComponent implements OnInit {
   constructor(private service: DashboardService) { }
-  tableContent: string[][];
-  tableHeaders: string[];
+  items: any[] = [];
   ngOnInit(): void {
     this.initializeTable();
   }
@@ -22,29 +21,11 @@ export class DashboardComponent implements OnInit {
     );
   }
   private setTableData(tableData: string): void{
-    const JSONObject = JSON.parse(tableData);
-    this.tableHeaders = this.getTableHeaders(JSONObject);
-    this.tableContent = this.getTableContent(JSONObject);
+    this.items = JSON.parse(tableData).data;
+    console.log(this.items[1]);
   }
-  private getTableContent(JSONObject: any): string[][]{
-    const tableRows: string[][] = [];
-    for (let rowIndex = 0; rowIndex < JSONObject.data.length; rowIndex++) {
-      const processedRow: string[] = [];
-      for (const tableHeader of this.tableHeaders){
-        processedRow.push(JSONObject.data[rowIndex][tableHeader]);
-      }
-      tableRows.push(processedRow);
-    }
-    return tableRows;
-  }
-  private getTableHeaders(JSONObject: any): string[]{
-    const headerArr: string[] = [];
-    for (const field of Object.keys(JSONObject.data[0])) {
-      headerArr.push(field);
-    }
-    return headerArr;
-  }
-  removeEntry(id: string): void {
+  removeEntry(entry: any): void {
+    console.log(entry);
   }
   editEntry(id: string): void{
 

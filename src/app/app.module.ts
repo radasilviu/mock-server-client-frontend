@@ -9,13 +9,17 @@ import { SecretPageComponent } from './secret-page/secret-page.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import {AuthInterceptor} from './interceptors/auth/auth.interceptor';
+import { UserEditComponent } from './components/user-edit/user-edit.component';
+import { KeysPipe } from './pipes/keys/keys.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     MainPageComponent,
-    SecretPageComponent
+    SecretPageComponent,
+    UserEditComponent,
+    KeysPipe
   ],
   imports: [
     HttpClientModule,
