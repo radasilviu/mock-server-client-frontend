@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Env} from '../configs/env';
-import {TokenService} from '../services/token/token.service';
+import {TokenService} from '../../services/token/token.service';
+import {Env} from '../../configs/env';
 
 @Component({
   selector: 'app-main-page',

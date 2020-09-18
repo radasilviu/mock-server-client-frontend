@@ -36,4 +36,12 @@ export class UserService {
     return throwError(
       'Something bad happened; please try again later.');
   }
+
+  deleteUserById(id: number): Observable<string> {
+    return this.http.delete('' + id, {responseType: 'text'});
+  }
+
+  editUserById(id: number, user: User): Observable<any>{
+    return this.http.put('' + id, user);
+  }
 }

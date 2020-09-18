@@ -1,2 +1,17 @@
 <p>dashboard works!</p>
 <p>{{ secret }}</p>
+
+<table>
+  <thead>
+  <tr>
+    <th *ngFor="let head of items[0] | keys">{{head}}</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let row of items">
+    <td *ngFor="let list of row | keys">{{row[list]}}</td>
+    <td><button (click)="editEntity(row)">Edit</button></td>
+    <td><button (click)="deleteEntity(row)">Remove</button></td>
+  </tr>
+  </tbody>
+</table>
