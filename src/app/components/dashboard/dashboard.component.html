@@ -7,8 +7,8 @@
   <tbody>
   <tr *ngFor="let row of items">
     <td *ngFor="let list of row | keys">{{row[list]}}</td>
-    <td><button (click)="editEntry(row)">Edit</button></td>
-    <td><button (click)="removeEntry(row)">Remove</button></td>
+    <td><button (click)="editEntity(row)">Edit</button></td>
+    <td><button (click)="deleteEntity(row)">Remove</button></td>
   </tr>
   </tbody>
 </table>

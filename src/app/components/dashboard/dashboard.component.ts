@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {DashboardService} from '../../services/dashboard/dashboard.service';
+import {UserService} from '../../services/user/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,13 +8,13 @@ import {DashboardService} from '../../services/dashboard/dashboard.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  constructor(private service: DashboardService) { }
+  constructor(private dashboardService: DashboardService, private userService: UserService) { }
   items: any[] = [];
   ngOnInit(): void {
     this.initializeTable();
   }
   private initializeTable(): void{
-    this.service.readFromFile().subscribe(
+    this.dashboardService.readFromFile().subscribe(
       {
         next: x => this.setTableData(x)
       }
@@ -22,10 +23,10 @@ export class DashboardComponent implements OnInit {
   private setTableData(tableData: string): void{
     this.items = JSON.parse(tableData).data;
   }
-  removeEntry(entry: any): void {
-    console.log(entry);
+  deleteEntity(entry: any): void {
+    this.userService.deleteUserById(entry.id);
   }
-  editEntry(id: string): void{
+  editEntity(id: string): void{
 
   }
 }

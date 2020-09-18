@@ -6,9 +6,14 @@ import {User} from '../../models/user';
 @Injectable({
   providedIn: 'root'
 })
-export class DashboardService {
+export class UserService {
+
   constructor(private http: HttpClient) { }
-  readFromFile(): Observable<string> {
-    return this.http.get('assets/tableInput.json', {responseType: 'text'});
+
+  deleteUserById(id: number): Observable<string> {
+    return this.http.delete('' + id, {responseType: 'text'});
+  }
+  editUserById(id: number, user: User): Observable<any>{
+    return this.http.put('' + id, user);
   }
 }
