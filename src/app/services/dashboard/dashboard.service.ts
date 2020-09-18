@@ -1,18 +1,13 @@
 import { Injectable } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardService {
-  constructor() { }
-  getTableContent(): string[][] {
-    return [
-      ['1', 'Romania', 'yes'],
-      ['2', 'Chad', 'yes'],
-      ['3', 'Germany', 'yes']
-    ];
-  }
-  getTableHeaders(): string[] {
-    return ['Id', 'Country', 'isReal'];
+  constructor(private http: HttpClient) { }
+  readFromFile(): Observable<string> {
+    return this.http.get('assets/tableInput.json', {responseType: 'text'});
   }
 }
