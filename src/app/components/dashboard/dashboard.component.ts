@@ -22,25 +22,22 @@ export class DashboardComponent implements OnInit {
     );
   }
   private setTableData(tableData: string): void{
-    this.tableHeaders = this.getTableHeaders(tableData);
-    this.tableContent = this.getTableContent(tableData);
-  }
-  private getTableContent(tableData: string): string[][]{
     const JSONObject = JSON.parse(tableData);
+    this.tableHeaders = this.getTableHeaders(JSONObject);
+    this.tableContent = this.getTableContent(JSONObject);
+  }
+  private getTableContent(JSONObject: any): string[][]{
     const tableRows: string[][] = [];
-    let rowIndex = 0;
-    for (const rowData of JSONObject.data) {
-      const row: string[] = [];
-      for (const item of this.tableHeaders){
-        row.push(JSONObject.data[rowIndex][item]);
+    for (let rowIndex = 0; rowIndex < JSONObject.data.length; rowIndex++) {
+      const processedRow: string[] = [];
+      for (const tableHeader of this.tableHeaders){
+        processedRow.push(JSONObject.data[rowIndex][tableHeader]);
       }
-      tableRows.push(row);
-      rowIndex++;
+      tableRows.push(processedRow);
     }
     return tableRows;
   }
-  private getTableHeaders(tableData: string): string[]{
-    const JSONObject = JSON.parse(tableData);
+  private getTableHeaders(JSONObject: any): string[]{
     const headerArr: string[] = [];
     for (const field of Object.keys(JSONObject.data[0])) {
       headerArr.push(field);
