@@ -3,5 +3,4 @@ export interface Token {
   expireTime: number;
   refreshToken: string;
   refreshExpiresIn: number;
-  accessTokenExpirationTime: number;
 }

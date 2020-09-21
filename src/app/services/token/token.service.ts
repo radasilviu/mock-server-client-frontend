@@ -25,8 +25,6 @@ export class TokenService {
     return this.http.post<Token>(url, body).pipe(
       tap(token => {
         localStorage.setItem('token', JSON.stringify(token));
-        token.accessTokenExpirationTime = moment().add(token.expireTime, 'seconds').unix();
-
         this.tokenSubject.next(token);
       }),
       catchError(this.handleError)
