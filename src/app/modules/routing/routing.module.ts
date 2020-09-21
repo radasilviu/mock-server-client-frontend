@@ -2,9 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {DashboardComponent} from '../../components/dashboard/dashboard.component';
 import {AuthGuard} from '../../guards/auth/auth.guard';
-import {MainPageComponent} from '../../main-page/main-page.component';
-import {SecretPageComponent} from '../../secret-page/secret-page.component';
 import {DashboardGuard} from '../../guards/dashboard/dashboard.guard';
+import {UserEditComponent} from '../../components/user-edit/user-edit.component';
+import {MainPageComponent} from '../../components/main-page/main-page.component';
+import {SecretPageComponent} from '../../components/secret-page/secret-page.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,10 @@ const routes: Routes = [
   {
     path: 'secret',
     component: SecretPageComponent
+  },
+  {
+    path: 'users/edit',
+    component: UserEditComponent
   },
 ];
 
