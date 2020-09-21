@@ -6,6 +6,7 @@ import {DashboardGuard} from '../../guards/dashboard/dashboard.guard';
 import {UserEditComponent} from '../../components/user-edit/user-edit.component';
 import {MainPageComponent} from '../../components/main-page/main-page.component';
 import {SecretPageComponent} from '../../components/secret-page/secret-page.component';
+import {CompaniesComponent} from '../../components/dataTables/companies/companies.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,11 @@ const routes: Routes = [
     path: 'users/edit',
     component: UserEditComponent
   },
+  {
+    path: 'company/list',
+    component: CompaniesComponent,
+    canActivate: [AuthGuard]
+  }
 ];
 
 @NgModule({
