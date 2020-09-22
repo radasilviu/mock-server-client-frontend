@@ -7,7 +7,7 @@
   <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
 </mat-card>
 
-<div class="mat-elevation-z8">
+<div class="mat-elevation-z8 datatable">
   <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
     <!-- ID Column -->
     <ng-container matColumnDef="id">
@@ -25,11 +25,13 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Actions </th>
       <td mat-cell *matCellDef="let row">
-        <!--
-        <button type="button" mdbBtn color="primary" mdbWavesEffect (click)="openEditUserDialog(row)"><mdb-icon fas icon="edit"></mdb-icon> Edit</button>
-        <button type="button" mdbBtn color="danger" mdbWavesEffect (click)="confirmDeleteDialog(row)"><mdb-icon fas icon="trash"></mdb-icon> Delete</button>
+        <button mat-raised-button color="primary" (click)="openEditCompanyDialog(row)">
+          Edit
+        </button>
+        <button mat-raised-button color="warn" (click)="confirmDeleteDialog(row)">
+          Delete
+        </button>
       </td>
-      -->
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

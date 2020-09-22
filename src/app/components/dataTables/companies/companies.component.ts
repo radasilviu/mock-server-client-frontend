@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {Company} from '../../../models/company';
 import {CompanyService} from '../../../services/company/company.service';
-import {Sort} from '@angular/material/sort';
+import {MatSort, Sort} from '@angular/material/sort';
+import {EditCompanyComponent} from '../../dialogs/edit-company/edit-company.component';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatDialog} from '@angular/material/dialog';
+import {DeleteCompanyComponent} from '../../dialogs/delete-company/delete-company.component';
 
 @Component({
   selector: 'app-companies',
@@ -24,7 +28,10 @@ export class CompaniesComponent implements OnInit {
 
   isLoading = true;
 
-  constructor(private companyService: CompanyService) { }
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+
+  constructor(private companyService: CompanyService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.loadData(this.pageSize, this.pageIndex, this.filter, this.searchAbleColumns, this.sortColumn, this.sortDirection);
@@ -61,10 +68,10 @@ export class CompaniesComponent implements OnInit {
     this.sortDirection = sort.direction;
     this.loadData(this.pageSize, this.pageIndex, this.filter, this.searchAbleColumns, this.sortColumn, this.sortDirection);
   }
-/*
-  openEditUserDialog(user): void {
-    const dialogRef = this.dialog.open(EditUserComponent, {
-      data: { user: user}
+
+  openEditCompanyDialog(company): void {
+    const dialogRef = this.dialog.open(EditCompanyComponent, {
+      data: { company: company}
     });
     dialogRef.afterClosed().subscribe(
       confirm => {
@@ -75,19 +82,19 @@ export class CompaniesComponent implements OnInit {
     )
   }
 
-  confirmDeleteDialog(user): void {
-    const dialogRef = this.dialog.open(DeleteUserComponent, {
-      data: { user: user}
+  confirmDeleteDialog(company): void {
+    const dialogRef = this.dialog.open(DeleteCompanyComponent, {
+      data: { company: company}
     });
     dialogRef.afterClosed().subscribe(
       confirm => {
         if (confirm) {
-          this.delete(user);
+          this.delete(company);
         }
       }
     );
   }
-*/
+
   delete(data): void {
     this.companyService
       .delete(data.id)
