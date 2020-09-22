@@ -6,6 +6,7 @@ import {Env} from '../../configs/env';
 import {catchError, tap} from 'rxjs/operators';
 import * as moment from 'moment';
 import {Router} from '@angular/router';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class TokenService {
 
   tokenSubject = new BehaviorSubject<Token>(this.parseToken());
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar) { }
 
   getAccessToken(code: string): Observable<Token> {
     const url = Env.authServerAPIRootURL + '/oauth/token';
@@ -27,24 +28,38 @@ export class TokenService {
         localStorage.setItem('token', JSON.stringify(token));
         this.tokenSubject.next(token);
       }),
-      catchError(this.handleError)
+      catchError(error => {
+        return this.handleError(error, this.snackBar);
+      })
     );
   }
 
-  handleError(error: HttpErrorResponse): Observable<never> {
+  handleError(error: HttpErrorResponse, snackBar: MatSnackBar): Observable<never> {
     console.error(error);
-    return throwError(
-      'Something bad happened; please try again later.');
+    snackBar.open('Something bad happened, please try again later.', '', {
+      duration: 3000
+    });
+    return throwError(error.message);
   }
 
   parseToken(): Token {
     return JSON.parse(localStorage.getItem('token'));
   }
 
-  logout(): Promise<boolean> {
-    localStorage.clear();
-    this.tokenSubject.next(null);
-    return this.router.navigate(['']);
+  logout(): Observable<any> {
+    const url = `${Env.authServerAPIRootURL}/oauth/token/delete`;
+    const body = this.tokenSubject.getValue();
+
+    return this.http.post(url, body).pipe(
+      tap(response => {
+        localStorage.clear();
+        this.tokenSubject.next(null);
+        this.router.navigate(['']);
+      }),
+      catchError(error => {
+        return this.handleError(error, this.snackBar);
+      })
+    );
   }
 
 }

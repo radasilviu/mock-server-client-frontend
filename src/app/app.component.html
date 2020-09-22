@@ -7,10 +7,19 @@
         <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
       </button>
       <h1>Mock Client</h1>
+      <span class="space"></span>
+
+      <button mat-mini-fab color="basic" [matMenuTriggerFor]="menu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>Profile</button>
+        <button mat-menu-item (click)="logout()">Logout</button>
+      </mat-menu>
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <mat-sidenav-container>
+  <mat-sidenav-container class="vh-100">
     <mat-sidenav #sidenav>
       <mat-nav-list>
         <a mat-list-item routerLink="/dashboard"> Dashboard</a>

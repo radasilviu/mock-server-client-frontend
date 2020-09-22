@@ -22,4 +22,10 @@ export class AppComponent implements OnInit {
         }
       });
   }
+
+  logout(): void {
+    this.tokenService
+      .logout()
+      .subscribe();
+  }
 }
