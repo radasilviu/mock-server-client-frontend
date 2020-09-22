@@ -1,7 +1,11 @@
-<button mat-raised-button color="primary" *ngIf="!isLoggingIn" (click)="login()" type="button">Login</button>
+<div class="loginForm">
+  <h2>Welcome, please login!</h2>
+  <button mat-raised-button color="primary" *ngIf="!isLoggingIn" (click)="login()" type="button">Login</button>
 
-<div *ngIf="isLoggingIn" class="container">
-  <p>
-    Logging in ...
-  </p>
+  <div *ngIf="isLoggingIn" class="container">
+    <p>
+      Logging in ...
+    </p>
+  </div>
+
 </div>
