@@ -15,8 +15,8 @@ import {DeleteCompanyComponent} from '../../dialogs/delete-company/delete-compan
 })
 export class CompaniesComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'name', 'actions'];
-  searchAbleColumns: string[] = ['id', 'name'];
+  displayedColumns: string[] = ['id', 'name', 'industry', 'actions'];
+  searchAbleColumns: string[] = ['id', 'name', 'industry'];
   sortColumn = 'id';
   sortDirection = 'asc';
   dataSource: MatTableDataSource<Company>;
