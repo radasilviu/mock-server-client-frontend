@@ -4,13 +4,14 @@ import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {Company} from '../../models/company';
 import {Env} from '../../configs/env';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompanyService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
 
   list(limit: number, pageIndex: number, filter: string = '', columns: string[], sortColumn: string, sortDirection: string): any {
     const data = {
@@ -25,7 +26,9 @@ export class CompanyService {
 
     return this.http.post(url, data)
       .pipe(
-        catchError(this.handleError)
+        catchError(error => {
+          return this.handleError(error, this.snackBar);
+        })
       );
   }
 
@@ -34,7 +37,9 @@ export class CompanyService {
 
     return this.http.delete(url)
       .pipe(
-        catchError(this.handleError)
+        catchError(error => {
+          return this.handleError(error, this.snackBar);
+        })
       );
   }
 
@@ -43,12 +48,17 @@ export class CompanyService {
 
     return this.http.put(url, data)
       .pipe(
-        catchError(this.handleError)
+        catchError(error => {
+          return this.handleError(error, this.snackBar);
+        })
       );
   }
 
-  handleError(error: HttpErrorResponse): Observable<never> {
-    return throwError(
-      'Something bad happened; please try again later.');
+  handleError(error: HttpErrorResponse, snackBar: MatSnackBar): Observable<never> {
+    console.error(error);
+    snackBar.open('Something bad happened, please try again later.', '', {
+      duration: 3000
+    });
+    return throwError(error.message);
   }
 }

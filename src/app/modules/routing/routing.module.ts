@@ -24,11 +24,7 @@ const routes: Routes = [
     component: SecretPageComponent
   },
   {
-    path: 'users/edit',
-    component: UserEditComponent
-  },
-  {
-    path: 'company/list',
+    path: 'companies',
     component: CompaniesComponent,
     canActivate: [AuthGuard]
   }
