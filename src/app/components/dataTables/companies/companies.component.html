@@ -1,5 +1,6 @@
 <mat-form-field>
-  <mat-label>Filter</mat-label>
+  <mat-label>Filter <mat-icon>filter_alt</mat-icon>
+  </mat-label>
   <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Google" #input>
 </mat-form-field>
 
@@ -28,11 +29,13 @@
       <th mat-header-cell *matHeaderCellDef> Actions </th>
       <td mat-cell *matCellDef="let row">
         <button mat-raised-button color="primary" (click)="openEditCompanyDialog(row)">
-          Edit
+          Edit <mat-icon>edit</mat-icon>
         </button>
         <button mat-raised-button color="warn" (click)="confirmDeleteDialog(row)">
-          Delete
+          Delete <mat-icon>delete</mat-icon>
         </button>
+
+
       </td>
     </ng-container>
 
@@ -45,11 +48,6 @@
     </tr>
   </table>
 
-  <mat-paginator
-    [length]="length"
-    [pageSize]="pageSize"
-    [pageIndex]="pageIndex"
-    [pageSizeOptions]="[100, 500, 1000]"
-    (page)="changePage($event)"
-  ></mat-paginator>
+  <mat-paginator [length]="length" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="[100, 500, 1000]"
+    (page)="changePage($event)"></mat-paginator>
 </div>

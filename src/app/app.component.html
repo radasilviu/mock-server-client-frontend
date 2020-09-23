@@ -13,8 +13,12 @@
         <mat-icon>account_circle</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>Profile</button>
-        <button mat-menu-item (click)="logout()">Logout</button>
+        <button mat-menu-item>
+          Profile <mat-icon>account_circle</mat-icon>
+        </button>
+        <button (click)="logout()" mat-menu-item>
+          Logout <mat-icon>exit_to_app</mat-icon>
+        </button>
       </mat-menu>
     </mat-toolbar-row>
   </mat-toolbar>
