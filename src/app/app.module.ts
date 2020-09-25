@@ -4,12 +4,9 @@ import { NgModule } from '@angular/core';
 import { RoutingModule } from './modules/routing/routing.module';
 import { AppComponent } from './app.component';
 import { MainPageComponent } from './components/main-page/main-page.component';
-import { SecretPageComponent } from './components/secret-page/secret-page.component';
-
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import {AuthInterceptor} from './interceptors/auth/auth.interceptor';
-import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { KeysPipe } from './pipes/keys/keys.pipe';
 import { CompaniesComponent } from './components/dataTables/companies/companies.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -30,18 +27,22 @@ import {MatListModule} from '@angular/material/list';
 import { MatSortModule } from '@angular/material/sort';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatMenuModule} from '@angular/material/menu';
+import { BooksComponent } from './components/dataTables/books/books.component';
+import { EditBookComponent } from './components/dialogs/edit-book/edit-book.component';
+import { DeleteBookComponent } from './components/dialogs/delete-book/delete-book.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     MainPageComponent,
-    SecretPageComponent,
-    UserEditComponent,
     KeysPipe,
     CompaniesComponent,
     EditCompanyComponent,
-    DeleteCompanyComponent
+    DeleteCompanyComponent,
+    BooksComponent,
+    EditBookComponent,
+    DeleteBookComponent
   ],
   imports: [
     HttpClientModule,
