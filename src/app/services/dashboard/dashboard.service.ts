@@ -1,14 +1,26 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {User} from '../../models/user';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
+import {Env} from '../../configs/env';
+import {catchError} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardService {
   constructor(private http: HttpClient) { }
-  readFromFile(): Observable<string> {
-    return this.http.get('assets/tableInput.json', {responseType: 'text'});
+
+  getSecret(): Observable<any> {
+    const url = Env.resourceServerRootURL + '/user/secret';
+
+    return this.http.get(url).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  handleError(error: HttpErrorResponse): Observable<never> {
+    console.error(error);
+    return throwError(
+      'Something bad happened; please try again later.');
   }
 }
