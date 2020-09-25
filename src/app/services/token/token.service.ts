@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -62,17 +62,30 @@ export class TokenService {
   logout(): Observable<any> {
     const url = `${Env.authServerAPIRootURL}/oauth/token/delete`;
     const body = this.tokenSubject.getValue();
+    const options = {
+      headers: {
+        'whitelist': 'true'
+      }
+    };
 
-    return this.http.post(url, body).pipe(
+    return this.http.post(url, body,options).pipe(
       tap(response => {
         localStorage.clear();
         this.tokenSubject.next(null);
         this.router.navigate(['']);
       }),
       catchError(error => {
-        return this.handleError(error, this.snackBar);
+        return this.handleLogoutError(error, this.snackBar);
       })
     );
+  }
+
+  handleLogoutError(error: HttpErrorResponse, snackBar: MatSnackBar): Observable<never> {
+    console.error(error);
+    snackBar.open('Your session has been expired, please login!', '', {
+      duration: 3000
+    });
+    return throwError(error.message);
   }
 
 }

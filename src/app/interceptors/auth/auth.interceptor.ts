@@ -4,15 +4,16 @@ import {
   HttpInterceptor, HttpRequest
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { Token } from '../../models/token';
 import { TokenService } from '../../services/token/token.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private tokenService: TokenService) { }
+  constructor(private tokenService: TokenService, private router: Router) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
@@ -35,12 +36,20 @@ export class AuthInterceptor implements HttpInterceptor {
           (token: Token) => {
             localStorage.setItem("token", JSON.stringify(token))
             this.tokenService.tokenSubject.next(token);
+            return next.handle(request);
+          },
+          (error: any) => {
+            this.tokenService.logout();
+            return;
           }
         );
-        return next.handle(request);
+      }else{
+        this.tokenService.logout();
+        return;
       }
     } else {
-      return next.handle(request);
+      return EMPTY;
+      // return next.handle(request);
     }
 
   }
