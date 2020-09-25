@@ -35,9 +35,11 @@ export class TokenService {
 
   generateNewAccessToken(token: Token): Observable<Token> {
     const url = Env.authServerAPIRootURL + "/oauth/refreshToken";
-    const headers = new HttpHeaders();
-    headers.set('WhiteList', 'true');
-    const options = { headers: headers };
+    const options = {
+      headers: {
+        'whitelist': 'true'
+      }
+    };
 
     return this.http.put<Token>(url, token, options);
   }

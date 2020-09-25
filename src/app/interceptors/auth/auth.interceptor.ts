@@ -20,7 +20,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
 
 
-    if (request.headers.has("WhiteList")) {
+    if (request.headers.get("whitelist")) {
       return next.handle(request);
     }
 
@@ -33,10 +33,11 @@ export class AuthInterceptor implements HttpInterceptor {
       } else if (now.unix() < refreshTokenExpireTime.unix()) {
         this.tokenService.generateNewAccessToken(token).subscribe(
           (token: Token) => {
+            localStorage.setItem("token", JSON.stringify(token))
             this.tokenService.tokenSubject.next(token);
           }
         );
-        return;
+        return next.handle(request);
       }
     } else {
       return next.handle(request);
