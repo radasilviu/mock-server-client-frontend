@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { EMPTY, Observable } from 'rxjs';
 import { Token } from '../../models/token';
 import { TokenService } from '../../services/token/token.service';
+import {catchError, switchMap} from 'rxjs/operators';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -19,9 +20,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     const token: Token = this.tokenService.tokenSubject.getValue();
 
-
-
-    if (request.headers.get("whitelist")) {
+    if (request.headers.get('whitelist')) {
       return next.handle(request);
     }
 
@@ -29,27 +28,31 @@ export class AuthInterceptor implements HttpInterceptor {
       const now = moment();
       const tokenExpireTime = moment(token.token_expire_time);
       const refreshTokenExpireTime = moment(token.refresh_token_expire_time);
+
       if (now.unix() < tokenExpireTime.unix()) {
         return next.handle(this.addAuthorizationHeader(request, token));
       } else if (now.unix() < refreshTokenExpireTime.unix()) {
-        this.tokenService.generateNewAccessToken(token).subscribe(
-          (token: Token) => {
-            localStorage.setItem("token", JSON.stringify(token))
-            this.tokenService.tokenSubject.next(token);
-            return next.handle(request);
-          },
-          (error: any) => {
-            this.tokenService.logout();
-            return;
-          }
+        return this.tokenService.generateNewAccessToken(token)
+          .pipe(
+            switchMap(
+              token => {
+                localStorage.setItem('token', JSON.stringify(token))
+                this.tokenService.tokenSubject.next(token);
+                return next.handle(request);
+              },
+            ),
+            catchError(error => {
+              console.log(error);
+              this.tokenService.logout().subscribe();
+              return EMPTY;
+            })
         );
       }else{
-        this.tokenService.logout();
-        return;
+        this.tokenService.logout().subscribe();
+        return EMPTY;
       }
     } else {
       return EMPTY;
-      // return next.handle(request);
     }
 
   }

@@ -17,7 +17,6 @@ export class DashboardComponent implements OnInit {
   constructor(private dashboardService: DashboardService, private userService: UserService) { }
 
   ngOnInit(): void {
-    this.initializeTable();
     this.userService
       .getSecret()
       .subscribe(
@@ -37,13 +36,5 @@ export class DashboardComponent implements OnInit {
 
   editEntity(id: string): void{
 
-  }
-
-  private initializeTable(): void {
-    this.dashboardService.readFromFile().subscribe(
-      {
-        next: x => this.setTableData(x)
-      }
-    );
   }
 }

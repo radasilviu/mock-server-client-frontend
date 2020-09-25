@@ -21,10 +21,15 @@ export class TokenService {
     const body = {
       clientCode: code
     };
+    const options = {
+      headers: {
+        'whitelist': 'true'
+      }
+    };
 
-    return this.http.post<Token>(url, body).pipe(
+    return this.http.post<Token>(url, body, options).pipe(
       tap((token: Token) => {
-        localStorage.setItem("token", JSON.stringify(token));
+        localStorage.setItem('token', JSON.stringify(token));
         this.tokenSubject.next(token);
       }),
       catchError(error => {
@@ -34,7 +39,7 @@ export class TokenService {
   }
 
   generateNewAccessToken(token: Token): Observable<Token> {
-    const url = Env.authServerAPIRootURL + "/oauth/refreshToken";
+    const url = Env.authServerAPIRootURL + '/oauth/refreshToken';
     const options = {
       headers: {
         'whitelist': 'true'
