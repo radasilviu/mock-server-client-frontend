@@ -51,8 +51,7 @@ export class TokenService {
 
 
   handleError(error: HttpErrorResponse, snackBar: MatSnackBar): Observable<never> {
-    console.error(error);
-    snackBar.open('Something bad happened, please try again later.', '', {
+    snackBar.open(error.error, '', {
       duration: 3000
     });
     return throwError(error.message);
@@ -73,24 +72,21 @@ export class TokenService {
       }
     };
 
-    return this.http.post(url, body,options).pipe(
+    return this.http.post(url, body, options).pipe(
       tap(response => {
-        localStorage.clear();
-        this.tokenSubject.next(null);
-        this.router.navigate(['']);
+        this.logoutSetup();
       }),
       catchError(error => {
-        return this.handleLogoutError(error, this.snackBar);
+        this.logoutSetup();
+        return this.handleError(error, this.snackBar);
       })
     );
   }
 
-  handleLogoutError(error: HttpErrorResponse, snackBar: MatSnackBar): Observable<never> {
-    console.error(error);
-    snackBar.open('Your session has been expired, please login!', '', {
-      duration: 3000
-    });
-    return throwError(error.message);
+  logoutSetup(){
+    localStorage.clear();
+    this.tokenSubject.next(null);
+    this.router.navigate(['']);
   }
 
 }
