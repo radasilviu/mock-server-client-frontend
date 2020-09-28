@@ -31,8 +31,8 @@ export class BookService {
       );
   }
 
-  delete(title: string): Observable<any> {
-    const url = Env.resourceServerRootURL + `/api/book/${title}`;
+  delete(bookId: string): Observable<any> {
+    const url = Env.resourceServerRootURL + `/api/book/${bookId}`;
 
     return this.http.delete(url)
       .pipe(
@@ -42,10 +42,10 @@ export class BookService {
       );
   }
 
-  update(data: Book): Observable<any> {
-    const url = Env.resourceServerRootURL + `/api/book/update`;
+  update(bookId: string, book: Book): Observable<any> {
+    const url = Env.resourceServerRootURL + `/api/book/update/${bookId}`;
 
-    return this.http.put(url, data)
+    return this.http.put(url, book)
       .pipe(
         catchError(error => {
           return this.handleError(error, this.snackBar);
