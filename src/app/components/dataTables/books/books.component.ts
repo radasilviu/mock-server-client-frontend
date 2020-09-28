@@ -99,7 +99,7 @@ export class BooksComponent implements OnInit {
 
   delete(data): void {
     this.bookService
-      .delete(data.title)
+      .delete(data.id)
       .subscribe(response => {
         this.loadData(this.pageSize, this.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);
       });
