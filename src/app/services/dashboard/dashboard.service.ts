@@ -11,7 +11,7 @@ export class DashboardService {
   constructor(private http: HttpClient) { }
 
   getSecret(): Observable<any> {
-    const url = Env.resourceServerRootURL + '/user/secret';
+    const url = Env.resourceServerRootURL + '/app/secret';
 
     return this.http.get(url).pipe(
       catchError(this.handleError)
