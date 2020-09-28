@@ -13,10 +13,10 @@ export class DashboardComponent implements OnInit {
   secret: string;
 
   ngOnInit(): void {
-    this.getSecret();
+    this.setSecret();
   }
 
-  private getSecret(): void {
+  private setSecret(): void {
     this.service
       .getSecret()
       .subscribe(
