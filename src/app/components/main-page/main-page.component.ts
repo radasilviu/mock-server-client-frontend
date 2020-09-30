@@ -28,7 +28,7 @@ export class MainPageComponent implements OnInit {
   }
 
   login(): void {
-    window.location.href = `${Env.authServerFrontendRootURL}/oauth/client-login?clientId=${Env.clientId}&clientSecret=${Env.clientSecret}&redirectURL=${window.location.href}`;
+    window.location.href = `${Env.authServerFrontendRootURL}/oauth/client-login?clientId=${Env.clientId}&clientSecret=${Env.clientSecret}&redirectURL=${window.location.href}&realm=${Env.realm}`;
   }
 
 }

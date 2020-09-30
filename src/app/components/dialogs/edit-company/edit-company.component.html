@@ -5,9 +5,8 @@
     <div class="row h-100 justify-content-center align-items-center">
       <div class="col-12">
         <div class="md-form">
-          <!-- Name -->
           <label for="name">Name</label>
-          <input mdbInput mdbValidate type="text" id="name" formControlName="name" class="form-control mb-4">
+          <input type="text" id="name" formControlName="name" class="form-control mb-4">
 
           <mdb-error *ngIf="name.invalid && (name.dirty || name.touched)">Required</mdb-error>
         </div>
