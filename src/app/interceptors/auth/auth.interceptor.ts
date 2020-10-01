@@ -38,7 +38,7 @@ export class AuthInterceptor implements HttpInterceptor {
               token => {
                 localStorage.setItem('token', JSON.stringify(token))
                 this.tokenService.tokenSubject.next(token);
-                return next.handle(request);
+                return next.handle(this.addAuthorizationHeader(request, token));
               },
             ),
             catchError(error => {

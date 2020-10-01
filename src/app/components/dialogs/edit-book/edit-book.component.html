@@ -1,0 +1,50 @@
+<h2>Edit</h2>
+
+<form [formGroup]="editBookForm" (ngSubmit)="onSubmit()">
+
+  <mat-dialog-content>
+    <div class="row h-100 justify-content-center align-items-center">
+      <div class="col-12">
+        <div class="md-form">
+          <label for="title">Title</label>
+          <input mdbInput mdbValidate type="text" id="title" formControlName="title" class="form-control mb-4">
+          <mdb-error *ngIf="title.invalid && (title.dirty || title.touched)">Required</mdb-error>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-content>
+    <div class="row h-100 justify-content-center align-items-center">
+      <div class="col-12">
+        <div class="md-form">
+          <label for="author">Author</label>
+          <input mdbInput mdbValidate type="text" id="author" formControlName="author" class="form-control mb-4">
+          <mdb-error *ngIf="author.invalid && (author.dirty || author.touched)">Required</mdb-error>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-content>
+    <div class="row h-100 justify-content-center align-items-center">
+      <div class="col-12">
+        <div class="md-form">
+          <label for="price">Price</label>
+          <input mdbInput mdbValidate type="text" id="price" formControlName="price" class="form-control mb-4">
+          <mdb-error *ngIf="price.invalid && (price.dirty || price.touched)">Required</mdb-error>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+
+    <button mat-raised-button color="primary" [mat-dialog-close]="true" type="submit"
+            [disabled]="editBookForm.invalid || editBookForm.pending ? true : null"
+    >
+      Update
+    </button>
+  </mat-dialog-actions>
+</form>

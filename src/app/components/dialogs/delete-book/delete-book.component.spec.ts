@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SecretPageComponent } from './secret-page.component';
+import { DeleteBookComponent } from './delete-book.component';
 
-describe('SecretPageComponent', () => {
-  let component: SecretPageComponent;
-  let fixture: ComponentFixture<SecretPageComponent>;
+describe('DeleteBookComponent', () => {
+  let component: DeleteBookComponent;
+  let fixture: ComponentFixture<DeleteBookComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SecretPageComponent ]
+      declarations: [ DeleteBookComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SecretPageComponent);
+    fixture = TestBed.createComponent(DeleteBookComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

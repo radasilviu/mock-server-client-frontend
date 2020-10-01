@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {User} from '../../models/user';
 import {DashboardService} from '../../services/dashboard/dashboard.service';
-import {UserService} from '../../services/user/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,31 +8,21 @@ import {UserService} from '../../services/user/user.service';
 })
 export class DashboardComponent implements OnInit {
 
-  users: Array<User>;
-  secret: string;
-  items: any[] = [];
+  constructor(private service: DashboardService) { }
 
-  constructor(private dashboardService: DashboardService, private userService: UserService) { }
+  secret: string;
 
   ngOnInit(): void {
-    this.userService
+    this.setSecret();
+  }
+
+  private setSecret(): void {
+    this.service
       .getSecret()
       .subscribe(
         secret => {
           this.secret = secret.content;
         }
       );
-  }
-
-  private setTableData(tableData: string): void{
-    this.items = JSON.parse(tableData).data;
-  }
-
-  deleteEntity(entry: any): void {
-    this.userService.deleteUserById(entry.id);
-  }
-
-  editEntity(id: string): void{
-
   }
 }
