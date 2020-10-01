@@ -45,7 +45,7 @@ export class BooksComponent implements OnInit {
       .list(pageSize, pageIndex, filter, searchAbleColumns, sortColumn, sortDirection)
       .subscribe(
         response => {
-          this.dataSource = new MatTableDataSource(response.books);
+          this.dataSource = new MatTableDataSource(response.data);
           this.length = response.filtered;
           this.isLoading = false;
         }
