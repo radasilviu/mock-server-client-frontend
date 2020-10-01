@@ -4,4 +4,5 @@ export class SampleEnv {
   static authServerFrontendRootURL: string;
   static clientId: string;
   static clientSecret: string;
+  static realm: string;
 }
