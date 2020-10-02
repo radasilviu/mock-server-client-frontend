@@ -15,12 +15,12 @@ export class CompanyService {
 
   list(limit: number, pageIndex: number, filter: string = '', columns: string[], sortColumn: string, sortDirection: string): any {
     const data = {
-      limit: limit,
+      pageSize : limit,
       offset: pageIndex * limit,
-      filter: filter,
-      columns: columns,
-      sortColumn: sortColumn,
-      sortDirection: sortDirection
+      searchTerm: filter,
+      columnsToSearchIn : columns,
+      sortColumn,
+      sortDirection
     };
     const url = Env.resourceServerRootURL + '/api/company/list';
 
