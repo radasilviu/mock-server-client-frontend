@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DeleteBookComponent } from './delete-book.component';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 describe('DeleteBookComponent', () => {
   let component: DeleteBookComponent;
@@ -8,7 +9,10 @@ describe('DeleteBookComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DeleteBookComponent ]
+      declarations: [ DeleteBookComponent ],
+      providers: [
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MatDialogRef, useValue: {} }],
     })
     .compileComponents();
   });

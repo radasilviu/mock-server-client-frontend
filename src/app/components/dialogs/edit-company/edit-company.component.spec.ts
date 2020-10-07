@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EditCompanyComponent } from './edit-company.component';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 describe('EditCompanyComponent', () => {
   let component: EditCompanyComponent;
@@ -8,7 +11,11 @@ describe('EditCompanyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditCompanyComponent ]
+      imports: [HttpClientTestingModule, MatSnackBarModule],
+      declarations: [ EditCompanyComponent ],
+      providers: [
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MatDialogRef, useValue: {} }],
     })
     .compileComponents();
   });
