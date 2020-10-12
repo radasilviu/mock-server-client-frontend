@@ -34,7 +34,7 @@ export class CompaniesComponent implements OnInit {
   constructor(private companyService: CompanyService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.loadData(this.pageSize, this.pageIndex, this.filter, this.searchAbleColumns, this.sortColumn, this.sortDirection);
+    this.loadData(this.pageSize, this.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);
   }
 
   applyFilter(event: Event): void {
@@ -42,15 +42,16 @@ export class CompaniesComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-    this.loadData(this.pageSize, this.pageIndex, this.filter, this.searchAbleColumns, this.sortColumn, this.sortDirection);
+    this.loadData(this.pageSize, this.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);
   }
 
   changePage(event): void {
     this.pageSize = event.pageSize;
-    this.loadData(this.pageSize, event.pageIndex, this.filter, this.searchAbleColumns, this.sortColumn, this.sortDirection);
+    this.loadData(this.pageSize, event.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);
   }
 
-  loadData(pageSize: number, pageIndex: number, filter: string, searchAbleColumns: string[], sortColumn: string, sortDirection: string): void {
+  loadData(pageSize: number, pageIndex: number,
+           filter: string, sortColumn: string, sortDirection: string, searchAbleColumns: string[]): void {
     this.isLoading = true;
     this.companyService
       .list(pageSize, pageIndex, filter, searchAbleColumns, sortColumn, sortDirection)
@@ -66,25 +67,25 @@ export class CompaniesComponent implements OnInit {
   sortData(sort: Sort): void {
     this.sortColumn = sort.active;
     this.sortDirection = sort.direction;
-    this.loadData(this.pageSize, this.pageIndex, this.filter, this.searchAbleColumns, this.sortColumn, this.sortDirection);
+    this.loadData(this.pageSize, this.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);
   }
 
   openEditCompanyDialog(company): void {
     const dialogRef = this.dialog.open(EditCompanyComponent, {
-      data: { company: company}
+      data: { company }
     });
     dialogRef.afterClosed().subscribe(
       confirm => {
         if (confirm) {
-          this.loadData(this.pageSize, this.pageIndex, this.filter, this.searchAbleColumns, this.sortColumn, this.sortDirection);
+          this.loadData(this.pageSize, this.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);
         }
       }
-    )
+    );
   }
 
   confirmDeleteDialog(company): void {
     const dialogRef = this.dialog.open(DeleteCompanyComponent, {
-      data: { company: company}
+      data: { company}
     });
     dialogRef.afterClosed().subscribe(
       confirm => {
@@ -99,7 +100,7 @@ export class CompaniesComponent implements OnInit {
     this.companyService
       .delete(data.id)
       .subscribe(response => {
-        this.loadData(this.pageSize, this.pageIndex, this.filter, this.searchAbleColumns, this.sortColumn, this.sortDirection);
+        this.loadData(this.pageSize, this.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);
       });
   }
 }
