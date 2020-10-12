@@ -66,7 +66,7 @@ import { DeleteBookComponent } from './components/dialogs/delete-book/delete-boo
     MatMenuModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })
