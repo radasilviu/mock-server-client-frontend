@@ -44,6 +44,7 @@ describe('CompanyService', () => {
     expect(req.request.method).toEqual('POST');
     expect(req.request.body).toEqual(expectedBody);
   });
+
   it('list() should send a POST request with properly formatted data _ desc', () => {
     const expectedBody =     {
       pageSize : 20,
@@ -76,6 +77,44 @@ describe('CompanyService', () => {
     };
 
     service.list(20, 0, '', ['name'], 'name', '').subscribe();
+
+    const req = httpMock.expectOne(Env.resourceServerRootURL + '/api/company/list');
+    expect(req.request.method).toEqual('POST');
+    expect(req.request.body).toEqual(expectedBody);
+  });
+
+  it('list() should send a POST request with properly formatted data _ non-0 page index', () => {
+    const expectedBody =     {
+      pageSize : 20,
+      offset : 20,
+      searchTerm : '',
+      sortDirection : '',
+      sortColumn : 'name',
+      columnsToSearchIn: [
+        'name'
+      ]
+    };
+
+    service.list(20, 1, '', ['name'], 'name', '').subscribe();
+
+    const req = httpMock.expectOne(Env.resourceServerRootURL + '/api/company/list');
+    expect(req.request.method).toEqual('POST');
+    expect(req.request.body).toEqual(expectedBody);
+  });
+
+  it('list() should send a POST request with properly formatted data _ has search term', () => {
+    const expectedBody =     {
+      pageSize : 20,
+      offset : 0,
+      searchTerm : 'searchTerm',
+      sortDirection : '',
+      sortColumn : 'name',
+      columnsToSearchIn: [
+        'name'
+      ]
+    };
+
+    service.list(20, 0, 'searchTerm', ['name'], 'name', '').subscribe();
 
     const req = httpMock.expectOne(Env.resourceServerRootURL + '/api/company/list');
     expect(req.request.method).toEqual('POST');
