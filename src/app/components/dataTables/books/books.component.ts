@@ -46,7 +46,7 @@ export class BooksComponent implements OnInit {
       .subscribe(
         response => {
           this.dataSource = new MatTableDataSource(response.data);
-          this.length = response.filtered;
+          this.length = response.totalItems;
           this.isLoading = false;
         }
       );
