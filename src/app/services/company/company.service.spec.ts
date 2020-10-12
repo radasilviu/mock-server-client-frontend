@@ -32,20 +32,53 @@ describe('CompanyService', () => {
       offset : 0,
       searchTerm : '',
       sortDirection : 'asc',
-      sortColumn : 'title',
+      sortColumn : 'name',
       columnsToSearchIn: [
-        'title'
+        'name'
       ]
     };
 
-    service.list(20, 0, '', ['title'], 'title', 'asc').subscribe();
+    service.list(20, 0, '', ['name'], 'name', 'asc').subscribe();
 
     const req = httpMock.expectOne(Env.resourceServerRootURL + '/api/company/list');
     expect(req.request.method).toEqual('POST');
     expect(req.request.body).toEqual(expectedBody);
+  });
+  it('list() should send a POST request with properly formatted data _ desc', () => {
+    const expectedBody =     {
+      pageSize : 20,
+      offset : 0,
+      searchTerm : '',
+      sortDirection : 'desc',
+      sortColumn : 'name',
+      columnsToSearchIn: [
+        'name'
+      ]
+    };
 
-    // Expect server to return the employee after POST
-    // const expectedResponse = new HttpResponse({ status: 201, statusText: 'Created', body: expectedBody });
-    // req.event(expectedResponse);
+    service.list(20, 0, '', ['name'], 'name', 'desc').subscribe();
+
+    const req = httpMock.expectOne(Env.resourceServerRootURL + '/api/company/list');
+    expect(req.request.method).toEqual('POST');
+    expect(req.request.body).toEqual(expectedBody);
+  });
+
+  it('list() should send a POST request with properly formatted data _ unsorted', () => {
+    const expectedBody =     {
+      pageSize : 20,
+      offset : 0,
+      searchTerm : '',
+      sortDirection : '',
+      sortColumn : 'name',
+      columnsToSearchIn: [
+        'name'
+      ]
+    };
+
+    service.list(20, 0, '', ['name'], 'name', '').subscribe();
+
+    const req = httpMock.expectOne(Env.resourceServerRootURL + '/api/company/list');
+    expect(req.request.method).toEqual('POST');
+    expect(req.request.body).toEqual(expectedBody);
   });
 });
