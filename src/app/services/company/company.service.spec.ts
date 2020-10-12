@@ -5,6 +5,7 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {OverlayModule} from '@angular/cdk/overlay';
+import {Env} from '../../configs/env';
 
 describe('CompanyService', () => {
   let service: CompanyService;
@@ -33,20 +34,18 @@ describe('CompanyService', () => {
       sortDirection : 'asc',
       sortColumn : 'title',
       columnsToSearchIn: [
-        'title',
-        'author',
-        'id'
+        'title'
       ]
     };
 
-    service.list(1, 1, '', [], '', 'asc').subscribe();
+    service.list(20, 0, '', ['title'], 'title', 'asc').subscribe();
 
-    const req = httpMock.expectOne('/api/company/list');
+    const req = httpMock.expectOne(Env.resourceServerRootURL + '/api/company/list');
     expect(req.request.method).toEqual('POST');
     expect(req.request.body).toEqual(expectedBody);
 
     // Expect server to return the employee after POST
-    const expectedResponse = new HttpResponse({ status: 201, statusText: 'Created', body: expectedBody });
-    req.event(expectedResponse);
+    // const expectedResponse = new HttpResponse({ status: 201, statusText: 'Created', body: expectedBody });
+    // req.event(expectedResponse);
   });
 });
