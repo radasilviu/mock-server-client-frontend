@@ -2,8 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { CompanyService } from './company.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {OverlayModule} from '@angular/cdk/overlay';
 import {Env} from '../../configs/env';
 
