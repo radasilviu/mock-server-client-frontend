@@ -21,11 +21,11 @@ export class ColumnHolder{
     }
   }
 
-  private remove(fieldName: string) {
-
+  private remove(fieldName: string): void{
+    this.currentColumns.splice(this.fieldIndex, 1);
   }
 
-  private add(fieldName: string) {
+  private add(fieldName: string): void{
 
   }
 

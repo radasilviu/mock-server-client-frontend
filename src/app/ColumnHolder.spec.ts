@@ -15,7 +15,7 @@ fdescribe('ColumnHolder', () => {
 
   it('should throw when trying to add fields outside the template', () => {
     const input = 'g';
-    expect(() => { columnHolder.setField(input, true); }).toThrowError('There is no field with value g inside template a,b,c,d,e');
+    expect(columnHolder.setField(input, true)).toThrowError('There is no field with value g inside template a,b,c,d,e');
   });
 
   it('should remove given letter from correct position (first)', () => {
@@ -24,7 +24,7 @@ fdescribe('ColumnHolder', () => {
 
     columnHolder.setField(input, false);
 
-    expect(() => { columnHolder.getFields(); }).toEqual(expected);
+    expect(columnHolder.getFields()).toEqual(expected);
   });
 
   it('should remove given letter from correct position (middle)', () => {
@@ -33,7 +33,7 @@ fdescribe('ColumnHolder', () => {
 
     columnHolder.setField(input, false);
 
-    expect(() => { columnHolder.getFields(); }).toEqual(expected);
+    expect(columnHolder.getFields()).toEqual(expected);
   });
 
   it('should remove given letter from correct position (last)', () => {
@@ -42,7 +42,7 @@ fdescribe('ColumnHolder', () => {
 
     columnHolder.setField(input, false);
 
-    expect(() => { columnHolder.getFields(); }).toEqual(expected);
+    expect(columnHolder.getFields()).toEqual(expected);
   });
 
   it('should add given letter at correct position (last)', () => {
@@ -52,7 +52,7 @@ fdescribe('ColumnHolder', () => {
     columnHolder.setField(input, false);
     columnHolder.setField(input, true);
 
-    expect(() => { columnHolder.getFields(); }).toEqual(expected);
+    expect(columnHolder.getFields()).toEqual(expected);
   });
 
   it('should add given letter at correct position (first)', () => {
@@ -62,7 +62,7 @@ fdescribe('ColumnHolder', () => {
     columnHolder.setField(input, false);
     columnHolder.setField(input, true);
 
-    expect(() => { columnHolder.getFields(); }).toEqual(expected);
+    expect(columnHolder.getFields()).toEqual(expected);
   });
 
   it('should add given letter at correct position (middle)', () => {
@@ -72,6 +72,6 @@ fdescribe('ColumnHolder', () => {
     columnHolder.setField(input, false);
     columnHolder.setField(input, true);
 
-    expect(() => { columnHolder.getFields(); }).toEqual(expected);
+    expect(columnHolder.getFields()).toEqual(expected);
   });
 });
