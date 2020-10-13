@@ -14,18 +14,18 @@ export class ColumnHolder{
         throw new Error('There is no field with value ' + fieldName + ' inside template ' + this.template);
     }
     if (shouldAdd) {
-      this.show(fieldName);
+      this.add(fieldName);
     }
     else {
-      this.hide(fieldName);
+      this.remove(fieldName);
     }
   }
 
-  private hide(fieldName: string) {
+  private remove(fieldName: string) {
 
   }
 
-  private show(fieldName: string) {
+  private add(fieldName: string) {
 
   }
 
