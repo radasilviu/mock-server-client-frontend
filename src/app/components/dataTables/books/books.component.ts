@@ -7,16 +7,23 @@ import {BookService} from '../../../services/book/book.service';
 import {MatDialog} from '@angular/material/dialog';
 import {EditBookComponent} from '../../dialogs/edit-book/edit-book.component';
 import {DeleteBookComponent} from '../../dialogs/delete-book/delete-book.component';
+import {ThemePalette} from '@angular/material/core';
+import {ColumnHolder} from '../../../ColumnHolder';
 
 @Component({
   selector: 'app-books',
   templateUrl: './books.component.html',
-  styleUrls: ['./books.component.css']
-})
+  styleUrls: ['./books.component.css']})
 export class BooksComponent implements OnInit {
 
-  displayedColumns: string[] = ['title', 'category', 'price', 'actions'];
-  searchAbleColumns: string[] = ['title', 'category'];
+  constructor(private bookService: BookService, private dialog: MatDialog) { }
+
+  displayedHolder: ColumnHolder;
+  searchableHolder: ColumnHolder;
+
+  displayedColumns: string[];
+  searchAbleColumns: string[];
+
   sortColumn = 'title';
   sortDirection = 'asc';
   dataSource: MatTableDataSource<Book>;
@@ -27,14 +34,50 @@ export class BooksComponent implements OnInit {
   pageIndex = 0;
 
   isLoading = true;
+  isInputFocused = false;
+
+  displayAll = false;
+  searchAll = false;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private bookService: BookService, private dialog: MatDialog) { }
+  displayableColumns: Task = {
+    name: 'Fields to display',
+    completed: true,
+    color: 'primary',
+    subcategories: [
+      {name: 'title', completed: true, color: 'primary'},
+      {name: 'category', completed: true, color: 'primary'},
+      {name: 'price', completed: true, color: 'primary'}
+    ]
+  };
+
+  searchableColumns: Task = {
+    name: 'Fields to search in',
+    completed: true,
+    color: 'primary',
+    subcategories: [
+      {name: 'title', completed: true, color: 'primary'},
+      {name: 'category', completed: true, color: 'primary'},
+      {name: 'price', completed: false, color: 'primary'}
+    ]
+  };
 
   ngOnInit(): void {
+    this.setDisplayedColumns();
+    this.setSearchableColumns();
     this.loadData(this.pageSize, this.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);
+  }
+
+  private setDisplayedColumns(): void{
+    this.displayedHolder = new ColumnHolder(['title', 'category', 'price', 'actions']);
+    this.displayedColumns = this.displayedHolder.getFields();
+  }
+
+  private setSearchableColumns(): void{
+    this.searchableHolder = new ColumnHolder(['title', 'category']);
+    this.searchAbleColumns = this.searchableHolder.getFields();
   }
 
   loadData(pageSize: number, pageIndex: number, filter: string,
@@ -104,4 +147,76 @@ export class BooksComponent implements OnInit {
         this.loadData(this.pageSize, this.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);
       });
   }
+
+  // Fancy - filter fields
+
+  changeFocus(): void{
+    this.isInputFocused = !this.isInputFocused;
+  }
+
+  // Display
+
+  updateAllComplete(): void{
+    this.displayAll = this.displayableColumns.subcategories != null && this.displayableColumns.subcategories.every(t => t.completed);
+  }
+
+  someComplete(): boolean {
+    if (this.displayableColumns.subcategories == null) {
+      return false;
+    }
+    return this.displayableColumns.subcategories.filter(t => t.completed).length > 0 && !this.displayAll;
+  }
+
+  setAll(completed: boolean): void{
+    this.displayAll = completed;
+    if (this.displayableColumns.subcategories == null) {
+      return;
+    }
+    this.displayableColumns.subcategories.forEach(t => {
+      t.completed = completed;
+      this.setFieldDisplay(t.name, completed);
+    });
+  }
+
+  setFieldDisplay(fieldName: string, shouldAdd: boolean): void{
+  this.displayedHolder.setField(fieldName, shouldAdd);
+  this.displayedColumns = this.displayedHolder.getFields();
+  }
+
+  // Search
+
+  updateAllSearchable(): void{
+    this.searchAll = this.searchableColumns.subcategories != null && this.searchableColumns.subcategories.every(t => t.completed);
+  }
+
+  someSearchable(): boolean {
+    if (this.searchableColumns.subcategories == null) {
+      return false;
+    }
+    return this.searchableColumns.subcategories.filter(t => t.completed).length > 0 && !this.searchAll;
+  }
+
+  searchAllColumns(completed: boolean): void{
+    this.searchAll = completed;
+    if (this.searchableColumns.subcategories == null) {
+      return;
+    }
+    this.searchableColumns.subcategories.forEach(t => {
+      t.completed = completed;
+      this.setFieldSearch(t.name, completed);
+    });
+  }
+
+  setFieldSearch(fieldName: string, shouldAdd: boolean): void{
+    this.searchableHolder.setField(fieldName, shouldAdd);
+    this.searchAbleColumns = this.searchableHolder.getFields();
+  }
+
+}
+
+export interface Task {
+  name: string;
+  completed: boolean;
+  color: ThemePalette;
+  subcategories?: Task[];
 }

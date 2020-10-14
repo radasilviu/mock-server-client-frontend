@@ -1,7 +1,28 @@
 <mat-form-field>
   <mat-label>Filter <mat-icon>filter_alt</mat-icon>
   </mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Google" #input>
+  <input matInput (keyup)="applyFilter($event)" (click)="changeFocus()" placeholder="Ex. Google" #input>
+  <section *ngIf="isInputFocused">
+  <span>
+    <mat-checkbox
+                  [checked]="displayAll"
+                  [indeterminate]="someComplete()"
+                  (change)="setAll($event.checked)">
+      {{displayableColumns.name}}
+    </mat-checkbox>
+  </span>
+    <span class="example-list-section">
+    <ul>
+      <li *ngFor="let subtask of displayableColumns.subcategories">
+        <mat-checkbox [(ngModel)]="subtask.completed"
+                      [color]="subtask.color"
+                      (ngModelChange)="updateAllComplete(); setFieldDisplay(subtask.name, $event)">
+          {{subtask.name}}
+        </mat-checkbox>
+      </li>
+    </ul>
+  </span>
+  </section>
 </mat-form-field>
 
 <mat-card *ngIf="isLoading" class="d-flex h-100 justify-content-center align-items-center table-loader position-fixed">
