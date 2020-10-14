@@ -1,6 +1,6 @@
 import {ColumnHolder} from './ColumnHolder';
 
-describe('ColumnHolder', () => {
+fdescribe('ColumnHolder', () => {
   let columnHolder: ColumnHolder;
 
   beforeEach(() => {
@@ -90,6 +90,66 @@ describe('ColumnHolder', () => {
 
     columnHolder.setField(input, false);
     columnHolder.setField(input, false);
+
+    expect(columnHolder.getFields()).toEqual(expected);
+  });
+
+  it('should remove given letters correctly', () => {
+    const expected: string[] = ['b', 'd', 'e'];
+
+    columnHolder.setField('a', false);
+    columnHolder.setField('c', false);
+
+    expect(columnHolder.getFields()).toEqual(expected);
+  });
+
+  it('should add given letters correctly', () => {
+    const expected: string[] = ['a', 'b', 'c', 'd', 'e'];
+
+    columnHolder.setField('a', false);
+    columnHolder.setField('c', false);
+    columnHolder.setField('a', true);
+    columnHolder.setField('c', true);
+
+    expect(columnHolder.getFields()).toEqual(expected);
+  });
+
+  it('should add and remove given letters correctly', () => {
+    const expected: string[] = ['a', 'b', 'd', 'e'];
+
+    columnHolder.setField('a', false);
+    columnHolder.setField('c', false);
+    columnHolder.setField('a', true);
+
+    expect(columnHolder.getFields()).toEqual(expected);
+  });
+
+  it('should remove all letters correctly', () => {
+    const expected: string[] = [];
+
+    columnHolder.setField('a', false);
+    columnHolder.setField('b', false);
+    columnHolder.setField('c', false);
+    columnHolder.setField('d', false);
+    columnHolder.setField('e', false);
+
+    expect(columnHolder.getFields()).toEqual(expected);
+  });
+
+  it('should add all letters correctly', () => {
+    const expected: string[] = [];
+
+    columnHolder.setField('a', false);
+    columnHolder.setField('b', false);
+    columnHolder.setField('c', false);
+    columnHolder.setField('d', false);
+    columnHolder.setField('e', false);
+
+    columnHolder.setField('a', true);
+    columnHolder.setField('b', true);
+    columnHolder.setField('c', true);
+    columnHolder.setField('d', true);
+    columnHolder.setField('e', true);
 
     expect(columnHolder.getFields()).toEqual(expected);
   });
