@@ -76,7 +76,7 @@ export class BooksComponent implements OnInit {
   }
 
   private setSearchableColumns(): void{
-    this.searchableHolder = new ColumnHolder(['title', 'category']);
+    this.searchableHolder = new ColumnHolder(['title', 'category', 'price']);
     this.searchAbleColumns = this.searchableHolder.getFields();
   }
 
@@ -210,7 +210,7 @@ export class BooksComponent implements OnInit {
   setFieldSearch(fieldName: string, shouldAdd: boolean): void{
     this.searchableHolder.setField(fieldName, shouldAdd);
     this.searchAbleColumns = this.searchableHolder.getFields();
-  }
+    this.loadData(this.pageSize, this.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);  }
 
 }
 

@@ -23,6 +23,27 @@
     </ul>
   </span>
   </section>
+  <section *ngIf="isInputFocused">
+  <span>
+    <mat-checkbox
+      [checked]="searchAll"
+      [indeterminate]="someSearchable()"
+      (change)="searchAllColumns($event.checked)">
+      {{searchableColumns.name}}
+    </mat-checkbox>
+  </span>
+    <span class="example-list-section">
+    <ul>
+      <li *ngFor="let subtask of searchableColumns.subcategories">
+        <mat-checkbox [(ngModel)]="subtask.completed"
+                      [color]="subtask.color"
+                      (ngModelChange)="updateAllSearchable(); setFieldSearch(subtask.name, $event)">
+          {{subtask.name}}
+        </mat-checkbox>
+      </li>
+    </ul>
+  </span>
+  </section>
 </mat-form-field>
 
 <mat-card *ngIf="isLoading" class="d-flex h-100 justify-content-center align-items-center table-loader position-fixed">
