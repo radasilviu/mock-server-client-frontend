@@ -1,10 +1,10 @@
 export class ColumnHolder{
-  private template: string[];
+  private readonly template: string[];
   private currentColumns: string[];
 
   constructor(template: string[]) {
-    this.template = template;
-    this.currentColumns = template;
+    this.template = Object.assign([], template);
+    this.currentColumns = Object.assign([], template);
   }
 
   setField(fieldName: string, shouldAdd: boolean): void{
@@ -25,7 +25,15 @@ export class ColumnHolder{
   }
 
   private add(fieldName: string): void{
-
+    const temp: string[] = [];
+    this.template.forEach(
+      (value) => {
+        if (this.currentColumns.includes(value) || value === fieldName) {
+          temp.push(value);
+        }
+      }
+    );
+    this.currentColumns = temp;
   }
 
   getFields(): string[]{
