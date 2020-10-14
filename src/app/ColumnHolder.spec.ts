@@ -74,4 +74,23 @@ fdescribe('ColumnHolder', () => {
 
     expect(columnHolder.getFields()).toEqual(expected);
   });
+
+  it('should not add given letter twice', () => {
+    const input = 'c';
+    const expected: string[] = ['a', 'b', 'c', 'd', 'e'];
+
+    columnHolder.setField(input, true);
+
+    expect(columnHolder.getFields()).toEqual(expected);
+  });
+
+  it('should not remove given letter twice', () => {
+    const input = 'c';
+    const expected: string[] = ['a', 'b', 'd', 'e'];
+
+    columnHolder.setField(input, false);
+    columnHolder.setField(input, false);
+
+    expect(columnHolder.getFields()).toEqual(expected);
+  });
 });
