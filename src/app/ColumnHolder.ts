@@ -8,7 +8,7 @@ export class ColumnHolder{
   }
 
   setField(fieldName: string, shouldAdd: boolean): void{
-    const fieldIndex: number = this.template.indexOf(fieldName);
+    let fieldIndex: number = this.template.indexOf(fieldName);
     if (fieldIndex === -1) {
         throw new Error('There is no field with value ' + fieldName + ' inside template ' + this.template);
     }
@@ -17,7 +17,8 @@ export class ColumnHolder{
     }
     else {
       if (this.currentColumns.includes(fieldName)) {
-      this.remove(fieldIndex);
+        fieldIndex = this.currentColumns.indexOf(fieldName);
+        this.remove(fieldIndex);
       }
     }
   }
