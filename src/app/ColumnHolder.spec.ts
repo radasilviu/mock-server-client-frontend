@@ -137,7 +137,7 @@ fdescribe('ColumnHolder', () => {
   });
 
   it('should add all letters correctly', () => {
-    const expected: string[] = [];
+    const expected: string[] = ['a', 'b', 'c', 'd', 'e'];
 
     columnHolder.setField('a', false);
     columnHolder.setField('b', false);
