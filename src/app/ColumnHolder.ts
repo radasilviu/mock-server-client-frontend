@@ -26,11 +26,11 @@ export class ColumnHolder{
     this.currentColumns.splice(fieldIndex, 1);
   }
 
-  private add(fieldName: string): void{
+  private add(fieldToAdd: string): void{
     const temp: string[] = [];
     this.template.forEach(
       (value) => {
-        if (this.currentColumns.includes(value) || value === fieldName) {
+        if (this.currentColumns.includes(value) || value === fieldToAdd) {
           temp.push(value);
         }
       }
