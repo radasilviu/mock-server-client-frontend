@@ -1,6 +1,6 @@
 import {ColumnHolder} from './ColumnHolder';
 
-fdescribe('ColumnHolder', () => {
+describe('ColumnHolder', () => {
   let columnHolder: ColumnHolder;
 
   beforeEach(() => {
