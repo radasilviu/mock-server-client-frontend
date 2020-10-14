@@ -16,7 +16,9 @@ export class ColumnHolder{
       this.add(fieldName);
     }
     else {
+      if (this.currentColumns.includes(fieldName)) {
       this.remove(fieldIndex);
+      }
     }
   }
 
