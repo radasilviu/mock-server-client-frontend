@@ -15,7 +15,7 @@ fdescribe('ColumnHolder', () => {
 
   it('should throw when trying to add fields outside the template', () => {
     const input = 'g';
-    expect(columnHolder.setField(input, true)).toThrowError('There is no field with value g inside template a,b,c,d,e');
+    expect(() => {columnHolder.setField(input, true); }).toThrowError('There is no field with value g inside template a,b,c,d,e');
   });
 
   it('should remove given letter from correct position (first)', () => {
@@ -29,7 +29,7 @@ fdescribe('ColumnHolder', () => {
 
   it('should remove given letter from correct position (middle)', () => {
     const input = 'c';
-    const expected: string[] = ['a', 'b', 'c', 'd', 'e'];
+    const expected: string[] = ['a', 'b', 'd', 'e'];
 
     columnHolder.setField(input, false);
 
