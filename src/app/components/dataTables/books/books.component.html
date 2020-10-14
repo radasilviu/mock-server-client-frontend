@@ -1,7 +1,7 @@
 <mat-form-field>
   <mat-label>Filter <mat-icon>filter_alt</mat-icon>
   </mat-label>
-  <input matInput (keyup)="applyFilter($event)" (click)="changeFocus()" placeholder="Ex. Google" #input>
+  <input matInput (keyup)="applyFilter($event)" (click)="ShowOptions()" placeholder="Ex. Google" #input>
   <section *ngIf="isInputFocused">
   <span>
     <mat-checkbox
@@ -43,6 +43,7 @@
       </li>
     </ul>
   </span>
+    <button (click)="hideOptions()">Close settings</button>
   </section>
 </mat-form-field>
 

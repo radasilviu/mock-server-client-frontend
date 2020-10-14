@@ -150,8 +150,12 @@ export class BooksComponent implements OnInit {
 
   // Fancy - filter fields
 
-  changeFocus(): void{
-    this.isInputFocused = !this.isInputFocused;
+  ShowOptions(): void{
+    this.isInputFocused = true;
+  }
+
+  hideOptions(): void{
+    this.isInputFocused = false;
   }
 
   // Display
@@ -211,7 +215,6 @@ export class BooksComponent implements OnInit {
     this.searchableHolder.setField(fieldName, shouldAdd);
     this.searchAbleColumns = this.searchableHolder.getFields();
     this.loadData(this.pageSize, this.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);  }
-
 }
 
 export interface Task {
