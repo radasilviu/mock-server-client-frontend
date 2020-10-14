@@ -31,6 +31,7 @@ import { BooksComponent } from './components/dataTables/books/books.component';
 import { EditBookComponent } from './components/dialogs/edit-book/edit-book.component';
 import { DeleteBookComponent } from './components/dialogs/delete-book/delete-book.component';
 import {MAT_CHECKBOX_CLICK_ACTION, MAT_CHECKBOX_DEFAULT_OPTIONS, MatCheckbox, MatCheckboxModule} from '@angular/material/checkbox';
+import { FilterComponent } from './components/filter/filter.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import {MAT_CHECKBOX_CLICK_ACTION, MAT_CHECKBOX_DEFAULT_OPTIONS, MatCheckbox, Ma
     DeleteCompanyComponent,
     BooksComponent,
     EditBookComponent,
-    DeleteBookComponent
+    DeleteBookComponent,
+    FilterComponent
   ],
   imports: [
     HttpClientModule,

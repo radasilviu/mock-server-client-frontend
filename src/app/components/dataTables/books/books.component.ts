@@ -7,8 +7,8 @@ import {BookService} from '../../../services/book/book.service';
 import {MatDialog} from '@angular/material/dialog';
 import {EditBookComponent} from '../../dialogs/edit-book/edit-book.component';
 import {DeleteBookComponent} from '../../dialogs/delete-book/delete-book.component';
-import {ThemePalette} from '@angular/material/core';
 import {ColumnHolder} from '../../../ColumnHolder';
+import { Task } from 'src/app/models/task';
 
 @Component({
   selector: 'app-books',
@@ -215,11 +215,4 @@ export class BooksComponent implements OnInit {
     this.searchableHolder.setField(fieldName, shouldAdd);
     this.searchAbleColumns = this.searchableHolder.getFields();
     this.loadData(this.pageSize, this.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);  }
-}
-
-export interface Task {
-  name: string;
-  completed: boolean;
-  color: ThemePalette;
-  subcategories?: Task[];
 }
