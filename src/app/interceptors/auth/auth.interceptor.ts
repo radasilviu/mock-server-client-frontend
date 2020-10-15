@@ -34,7 +34,6 @@ export class AuthInterceptor implements HttpInterceptor {
       const refreshTokenExpireTime = moment(token.refresh_token_expire_time);
 
       if (now.unix() < tokenExpireTime.unix()) {
-        console.log("intra")
 
         return next.handle(this.addAuthorizationHeader(request, token)).pipe(catchError(error => {
           return this.handleError(error,this.tokenService)
@@ -44,7 +43,6 @@ export class AuthInterceptor implements HttpInterceptor {
           .pipe(
             switchMap(
               token => {
-                console.log("dsadas")
                 localStorage.setItem('token', JSON.stringify(token))
                 this.tokenService.tokenSubject.next(token);
                 return next.handle(this.addAuthorizationHeader(request, token));
@@ -56,11 +54,9 @@ export class AuthInterceptor implements HttpInterceptor {
         );
       }else{
         this.tokenService.logout().subscribe();
-        console.log("logout")
         return EMPTY;
       }
     } else {
-      console.log("logout")
       return EMPTY;
     }
 
