@@ -15,6 +15,8 @@ export class MainPageComponent implements OnInit {
   constructor(private route: ActivatedRoute, private tokenService: TokenService, private router: Router) {}
 
   ngOnInit(): void {
+    localStorage.setItem("realm",Env.realm)
+
     const code = this.route.snapshot.queryParamMap.get('code');
     if (code) {
       this.isLoggingIn = true;
