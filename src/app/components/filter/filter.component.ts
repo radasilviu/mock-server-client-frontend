@@ -1,6 +1,8 @@
 import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import {ColumnHolder} from '../../ColumnHolder';
 import {Task} from '../../models/task';
+import {Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-filter',
@@ -29,7 +31,15 @@ export class FilterComponent implements OnInit {
   @Output() setSearchableEvent = new EventEmitter<string[]>();
   @Output() setSearchTermEvent = new EventEmitter<string>();
 
+  modelChanged: Subject<string> = new Subject<string>();
+
   ngOnInit(): void {
+
+    this.modelChanged.pipe(
+      debounceTime(500),
+      distinctUntilChanged())
+      .subscribe(searchTerm => this.setSearchTerm(searchTerm));
+
     this.displayedColumnHolder = this.getColumnHolderFromTask(this.taskDisplayableColumns, true);
     this.searchableColumnHolder = this.getColumnHolderFromTask(this.taskSearchableColumns, false);
 
@@ -58,8 +68,8 @@ export class FilterComponent implements OnInit {
 
   applyFilter(event: Event): void {
      const searchTerm = (event.target as HTMLInputElement).value;
-     this.setSearchTerm(searchTerm);
-     console.log(searchTerm);
+     // this.setSearchTerm(searchTerm);
+     this.modelChanged.next(searchTerm);
   }
 
   setDisplayableColumns(): void{
