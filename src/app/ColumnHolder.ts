@@ -10,7 +10,7 @@ export class ColumnHolder{
   setField(fieldName: string, shouldAdd: boolean): void{
     const fieldIndex: number = this.template.indexOf(fieldName);
     if (fieldIndex === -1) {
-        throw new Error('There is no field with value ' + fieldName + ' inside template ' + this.template);
+        throw new Error('There is no field with value ' + fieldName + ' inside template: [ ' + this.template + ' ]');
     }
     if (shouldAdd) {
       this.add(fieldName);
