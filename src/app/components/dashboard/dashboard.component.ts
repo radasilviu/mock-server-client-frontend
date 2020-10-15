@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {DashboardService} from '../../services/dashboard/dashboard.service';
+import {TokenService} from "../../services/token/token.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -8,7 +9,7 @@ import {DashboardService} from '../../services/dashboard/dashboard.service';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private service: DashboardService) { }
+  constructor(private service: DashboardService,private tokenService:TokenService) { }
 
   secret: string;
 
@@ -22,6 +23,10 @@ export class DashboardComponent implements OnInit {
       .subscribe(
         secret => {
           this.secret = secret.content;
+        },
+
+        error =>{
+          this.tokenService.logout()
         }
       );
   }
