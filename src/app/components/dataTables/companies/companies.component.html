@@ -1,8 +1,9 @@
-<mat-form-field>
-  <mat-label>Filter <mat-icon>filter_alt</mat-icon>
-  </mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Google" #input>
-</mat-form-field>
+<app-filter [taskDisplayableColumns]="taskDisplayableColumns"
+            [taskSearchableColumns]="taskSearchableColumns"
+            (setDisplayedEvent)="setDisplayed($event)"
+            (setSearchableEvent)="setSearchable($event)"
+            (setSearchTermEvent)="setSearchTerm($event)"
+></app-filter>
 
 <mat-card *ngIf="isLoading" class="d-flex h-100 justify-content-center align-items-center table-loader position-fixed">
   <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>

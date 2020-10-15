@@ -7,6 +7,7 @@ import {EditCompanyComponent} from '../../dialogs/edit-company/edit-company.comp
 import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
 import {DeleteCompanyComponent} from '../../dialogs/delete-company/delete-company.component';
+import {Task} from '../../../models/task';
 
 @Component({
   selector: 'app-companies',
@@ -17,11 +18,33 @@ export class CompaniesComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'name', 'industry', 'actions'];
   searchAbleColumns: string[] = ['id', 'name', 'industry'];
+  searchTerm: string;
+
+  taskDisplayableColumns: Task = {
+    name: 'Fields to display',
+    completed: true,
+    color: 'primary',
+    subcategories: [
+      {name: 'id', completed: true, color: 'primary'},
+      {name: 'name', completed: true, color: 'primary'},
+      {name: 'industry', completed: true, color: 'primary'}
+    ]
+  };
+  taskSearchableColumns: Task = {
+    name: 'Fields to search in',
+    completed: true,
+    color: 'primary',
+    subcategories: [
+      {name: 'id', completed: true, color: 'primary'},
+      {name: 'name', completed: true, color: 'primary'},
+      {name: 'industry', completed: false, color: 'primary'}
+    ]
+  };
+
   sortColumn = 'id';
   sortDirection = 'asc';
   dataSource: MatTableDataSource<Company>;
 
-  filter: string;
   length: number;
   pageSize = 100;
   pageIndex = 0;
@@ -34,20 +57,24 @@ export class CompaniesComponent implements OnInit {
   constructor(private companyService: CompanyService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.loadData(this.pageSize, this.pageIndex, this.filter, this.searchAbleColumns, this.sortColumn, this.sortDirection);
+    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.searchAbleColumns, this.sortColumn, this.sortDirection);
+  }
+
+  reloadData(): void{
+    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.searchAbleColumns, this.sortColumn, this.sortDirection);
   }
 
   applyFilter(event: Event): void {
-    this.filter = (event.target as HTMLInputElement).value;
+    this.searchTerm = (event.target as HTMLInputElement).value;
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-    this.loadData(this.pageSize, this.pageIndex, this.filter, this.searchAbleColumns, this.sortColumn, this.sortDirection);
+    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.searchAbleColumns, this.sortColumn, this.sortDirection);
   }
 
   changePage(event): void {
     this.pageSize = event.pageSize;
-    this.loadData(this.pageSize, event.pageIndex, this.filter, this.searchAbleColumns, this.sortColumn, this.sortDirection);
+    this.loadData(this.pageSize, event.pageIndex, this.searchTerm, this.searchAbleColumns, this.sortColumn, this.sortDirection);
   }
 
   loadData(pageSize: number, pageIndex: number, filter: string, searchAbleColumns: string[], sortColumn: string, sortDirection: string): void {
@@ -66,25 +93,25 @@ export class CompaniesComponent implements OnInit {
   sortData(sort: Sort): void {
     this.sortColumn = sort.active;
     this.sortDirection = sort.direction;
-    this.loadData(this.pageSize, this.pageIndex, this.filter, this.searchAbleColumns, this.sortColumn, this.sortDirection);
+    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.searchAbleColumns, this.sortColumn, this.sortDirection);
   }
 
   openEditCompanyDialog(company): void {
     const dialogRef = this.dialog.open(EditCompanyComponent, {
-      data: { company: company}
+      data: { company}
     });
     dialogRef.afterClosed().subscribe(
       confirm => {
         if (confirm) {
-          this.loadData(this.pageSize, this.pageIndex, this.filter, this.searchAbleColumns, this.sortColumn, this.sortDirection);
+          this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.searchAbleColumns, this.sortColumn, this.sortDirection);
         }
       }
-    )
+    );
   }
 
   confirmDeleteDialog(company): void {
     const dialogRef = this.dialog.open(DeleteCompanyComponent, {
-      data: { company: company}
+      data: { company}
     });
     dialogRef.afterClosed().subscribe(
       confirm => {
@@ -99,7 +126,22 @@ export class CompaniesComponent implements OnInit {
     this.companyService
       .delete(data.id)
       .subscribe(response => {
-        this.loadData(this.pageSize, this.pageIndex, this.filter, this.searchAbleColumns, this.sortColumn, this.sortDirection);
+        this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.searchAbleColumns, this.sortColumn, this.sortDirection);
       });
+  }
+
+  setDisplayed(displayedColumns: string[]): void{
+    this.displayedColumns = displayedColumns;
+    this.reloadData();
+  }
+
+  setSearchable(searchableColumns: string[]): void{
+    this.searchAbleColumns = searchableColumns;
+    this.reloadData();
+  }
+
+  setSearchTerm(term: string): void{
+    this.searchTerm = term;
+    this.reloadData();
   }
 }
