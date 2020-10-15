@@ -58,18 +58,13 @@ export class FilterComponent implements OnInit {
     return new ColumnHolder(colList);
   }
 
-  showOptions(): void{
-    this.showConfiguration = true;
-  }
-
-  hideOptions(): void{
-    this.showConfiguration = false;
+  changeConfigurationVisibility(): void{
+    this.showConfiguration = !this.showConfiguration;
   }
 
   applyFilter(event: Event): void {
-     const searchTerm = (event.target as HTMLInputElement).value;
-     // this.setSearchTerm(searchTerm);
-     this.modelChanged.next(searchTerm);
+   const searchTerm = (event.target as HTMLInputElement).value;
+   this.modelChanged.next(searchTerm);
   }
 
   setDisplayableColumns(): void{
