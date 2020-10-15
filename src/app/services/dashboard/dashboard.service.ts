@@ -19,7 +19,6 @@ export class DashboardService {
   }
 
   handleError(error: HttpErrorResponse): Observable<never> {
-    console.error(error);
     return throwError(
       'Something bad happened; please try again later.');
   }

@@ -55,7 +55,6 @@ export class CompanyService {
   }
 
   handleError(error: HttpErrorResponse, snackBar: MatSnackBar): Observable<never> {
-    console.error(error);
     snackBar.open('Something bad happened, please try again later.', '', {
       duration: 3000
     });
