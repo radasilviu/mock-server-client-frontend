@@ -1,52 +1,62 @@
 <div>
-  <span class="material-icons" (click)="changeConfigurationVisibility()">
-  tune
-  </span>
-  <mat-form-field>
-    <mat-label>Filter <mat-icon>filter_alt</mat-icon>
-    </mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Google" #input>
-  </mat-form-field>
-  <section *ngIf="showConfiguration">
-      <span>
-        <mat-checkbox
-          [checked]="displayAll"
-          [indeterminate]="checkIfSomeDisplayable()"
-          (change)="setAllColumnsDisplayable($event.checked)">
-          {{taskDisplayableColumns.name}}
-        </mat-checkbox>
+  <div class="float-right">
+    <div class="float-right m-2">
+      <span class="material-icons float-right" (click)="changeConfigurationVisibility()">
+      tune
       </span>
-      <span class="example-list-section">
-        <ul>
-          <li *ngFor="let subtask of taskDisplayableColumns.subcategories">
-            <mat-checkbox [(ngModel)]="subtask.completed"
-                          [color]="subtask.color"
-                          (ngModelChange)="checkIfAllDisplayable(); setFieldDisplay(subtask.name, $event)">
-              {{subtask.name}}
+    </div>
+    <div class="custom-control-inline">
+      <mat-form-field *ngIf="!showConfiguration">
+        <mat-label>Filter <mat-icon>filter_alt</mat-icon>
+        </mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Google" #input>
+      </mat-form-field>
+    </div>
+    <div *ngIf="showConfiguration" class="custom-control-inline">
+      <div class="custom-control-inline">
+        <section class="m-3">
+          <span>
+            <mat-checkbox
+              [checked]="displayAll"
+              [indeterminate]="checkIfSomeDisplayable()"
+              (change)="setAllColumnsDisplayable($event.checked)">
+              {{taskDisplayableColumns.name}}
             </mat-checkbox>
-          </li>
-        </ul>
-      </span>
-  </section>
-  <section *ngIf="showConfiguration">
-      <span>
-        <mat-checkbox
-          [checked]="searchAll"
-          [indeterminate]="checkIfSomeSearchable()"
-          (change)="setAllColumnsSearchable($event.checked)">
-          {{taskSearchableColumns.name}}
-        </mat-checkbox>
-      </span>
-      <span class="example-list-section">
-        <ul>
-          <li *ngFor="let subtask of taskSearchableColumns.subcategories">
-            <mat-checkbox [(ngModel)]="subtask.completed"
-                          [color]="subtask.color"
-                          (ngModelChange)="checkIfAllSearchable(); setFieldSearch(subtask.name, $event)">
-              {{subtask.name}}
+          </span>
+          <span class="example-list-section">
+            <ul>
+              <li *ngFor="let subtask of taskDisplayableColumns.subcategories">
+                <mat-checkbox [(ngModel)]="subtask.completed"
+                              [color]="subtask.color"
+                              (ngModelChange)="checkIfAllDisplayable(); setFieldDisplay(subtask.name, $event)">
+                  {{subtask.name}}
+                </mat-checkbox>
+              </li>
+            </ul>
+          </span>
+        </section>
+        <section class="float-left m-3">
+          <span>
+            <mat-checkbox
+              [checked]="searchAll"
+              [indeterminate]="checkIfSomeSearchable()"
+              (change)="setAllColumnsSearchable($event.checked)">
+              {{taskSearchableColumns.name}}
             </mat-checkbox>
-          </li>
-        </ul>
-      </span>
-  </section>
+          </span>
+          <span class="example-list-section">
+              <ul>
+                <li *ngFor="let subtask of taskSearchableColumns.subcategories">
+                  <mat-checkbox [(ngModel)]="subtask.completed"
+                                [color]="subtask.color"
+                                (ngModelChange)="checkIfAllSearchable(); setFieldSearch(subtask.name, $event)">
+                    {{subtask.name}}
+                  </mat-checkbox>
+                </li>
+              </ul>
+          </span>
+        </section>
+      </div>
+    </div>
+  </div>
 </div>
