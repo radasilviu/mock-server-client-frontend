@@ -18,31 +18,11 @@ export class BooksComponent implements OnInit {
 
   constructor(private bookService: BookService, private dialog: MatDialog) { }
 
-  displayedHolder: ColumnHolder;
-  searchableHolder: ColumnHolder;
+  displayedColumns: string[] = ['title', 'category', 'price', 'actions'];
+  searchAbleColumns: string[] = ['title', 'category'];
+  searchTerm: string;
 
-  displayedColumns: string[];
-  searchAbleColumns: string[];
-
-  sortColumn = 'title';
-  sortDirection = 'asc';
-  dataSource: MatTableDataSource<Book>;
-
-  filter: string;
-  length: number;
-  pageSize = 100;
-  pageIndex = 0;
-
-  isLoading = true;
-  isInputFocused = false;
-
-  displayAll = false;
-  searchAll = false;
-
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
-
-  displayableColumns: Task = {
+  taskDisplayableColumns: Task = {
     name: 'Fields to display',
     completed: true,
     color: 'primary',
@@ -52,8 +32,7 @@ export class BooksComponent implements OnInit {
       {name: 'price', completed: true, color: 'primary'}
     ]
   };
-
-  searchableColumns: Task = {
+  taskSearchableColumns: Task = {
     name: 'Fields to search in',
     completed: true,
     color: 'primary',
@@ -64,24 +43,28 @@ export class BooksComponent implements OnInit {
     ]
   };
 
+  sortColumn = 'title';
+  sortDirection = 'asc';
+  dataSource: MatTableDataSource<Book>;
+
+  length: number;
+  pageSize = 100;
+  pageIndex = 0;
+
+  isLoading = true;
+
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+
   ngOnInit(): void {
-    this.setDisplayedColumns();
-    this.setSearchableColumns();
-    this.loadData(this.pageSize, this.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);
+    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
   }
 
-  private setDisplayedColumns(): void{
-    this.displayedHolder = new ColumnHolder(['title', 'category', 'price', 'actions']);
-    this.displayedColumns = this.displayedHolder.getFields();
+  reloadData(): void{
+    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
   }
 
-  private setSearchableColumns(): void{
-    this.searchableHolder = new ColumnHolder(['title', 'category', 'price']);
-    this.searchAbleColumns = this.searchableHolder.getFields();
-  }
-
-  loadData(pageSize: number, pageIndex: number, filter: string,
-           sortColumn: string, sortDirection: string,
+  loadData(pageSize: number, pageIndex: number, filter: string, sortColumn: string, sortDirection: string,
            searchAbleColumns: string[]): void {
     this.isLoading = true;
     this.bookService
@@ -95,23 +78,15 @@ export class BooksComponent implements OnInit {
       );
   }
 
-  applyFilter(event: Event): void {
-    this.filter = (event.target as HTMLInputElement).value;
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-    this.loadData(this.pageSize, this.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);
-  }
-
   changePage(event): void {
     this.pageSize = event.pageSize;
-    this.loadData(this.pageSize, event.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);
+    this.loadData(this.pageSize, event.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
   }
 
   sortData(sort: Sort): void {
     this.sortColumn = sort.active;
     this.sortDirection = sort.direction;
-    this.loadData(this.pageSize, this.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);
+    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
   }
 
   openEditBookDialog(book: Book): void {
@@ -121,7 +96,7 @@ export class BooksComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
       confirm => {
         if (confirm) {
-          this.loadData(this.pageSize, this.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);
+          this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
         }
       }
     );
@@ -144,75 +119,30 @@ export class BooksComponent implements OnInit {
     this.bookService
       .delete(data.id)
       .subscribe(response => {
-        this.loadData(this.pageSize, this.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);
+        this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
       });
   }
 
-  // Fancy - filter fields
-
-  ShowOptions(): void{
-    this.isInputFocused = true;
-  }
-
-  hideOptions(): void{
-    this.isInputFocused = false;
-  }
-
-  // Display
-
-  updateAllComplete(): void{
-    this.displayAll = this.displayableColumns.subcategories != null && this.displayableColumns.subcategories.every(t => t.completed);
-  }
-
-  someComplete(): boolean {
-    if (this.displayableColumns.subcategories == null) {
-      return false;
+  applyFilter(filter: string): void {
+    this.searchTerm = filter;
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
-    return this.displayableColumns.subcategories.filter(t => t.completed).length > 0 && !this.displayAll;
+    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
   }
 
-  setAll(completed: boolean): void{
-    this.displayAll = completed;
-    if (this.displayableColumns.subcategories == null) {
-      return;
-    }
-    this.displayableColumns.subcategories.forEach(t => {
-      t.completed = completed;
-      this.setFieldDisplay(t.name, completed);
-    });
+  setDisplayed(displayedColumns: string[]): void{
+    this.displayedColumns = displayedColumns;
+    this.reloadData();
   }
 
-  setFieldDisplay(fieldName: string, shouldAdd: boolean): void{
-  this.displayedHolder.setField(fieldName, shouldAdd);
-  this.displayedColumns = this.displayedHolder.getFields();
+  setSearchable(searchableColumns: string[]): void{
+    this.searchAbleColumns = searchableColumns;
+    this.reloadData();
   }
 
-  // Search
-
-  updateAllSearchable(): void{
-    this.searchAll = this.searchableColumns.subcategories != null && this.searchableColumns.subcategories.every(t => t.completed);
+  setSearchTerm(term: string): void{
+    this.searchTerm = term;
+    this.reloadData();
   }
-
-  someSearchable(): boolean {
-    if (this.searchableColumns.subcategories == null) {
-      return false;
-    }
-    return this.searchableColumns.subcategories.filter(t => t.completed).length > 0 && !this.searchAll;
-  }
-
-  searchAllColumns(completed: boolean): void{
-    this.searchAll = completed;
-    if (this.searchableColumns.subcategories == null) {
-      return;
-    }
-    this.searchableColumns.subcategories.forEach(t => {
-      t.completed = completed;
-      this.setFieldSearch(t.name, completed);
-    });
-  }
-
-  setFieldSearch(fieldName: string, shouldAdd: boolean): void{
-    this.searchableHolder.setField(fieldName, shouldAdd);
-    this.searchAbleColumns = this.searchableHolder.getFields();
-    this.loadData(this.pageSize, this.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);  }
 }

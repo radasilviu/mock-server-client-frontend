@@ -1,51 +1,9 @@
-<mat-form-field>
-  <mat-label>Filter <mat-icon>filter_alt</mat-icon>
-  </mat-label>
-  <input matInput (keyup)="applyFilter($event)" (click)="ShowOptions()" placeholder="Ex. Google" #input>
-  <section *ngIf="isInputFocused">
-  <span>
-    <mat-checkbox
-                  [checked]="displayAll"
-                  [indeterminate]="someComplete()"
-                  (change)="setAll($event.checked)">
-      {{displayableColumns.name}}
-    </mat-checkbox>
-  </span>
-    <span class="example-list-section">
-    <ul>
-      <li *ngFor="let subtask of displayableColumns.subcategories">
-        <mat-checkbox [(ngModel)]="subtask.completed"
-                      [color]="subtask.color"
-                      (ngModelChange)="updateAllComplete(); setFieldDisplay(subtask.name, $event)">
-          {{subtask.name}}
-        </mat-checkbox>
-      </li>
-    </ul>
-  </span>
-  </section>
-  <section *ngIf="isInputFocused">
-  <span>
-    <mat-checkbox
-      [checked]="searchAll"
-      [indeterminate]="someSearchable()"
-      (change)="searchAllColumns($event.checked)">
-      {{searchableColumns.name}}
-    </mat-checkbox>
-  </span>
-    <span class="example-list-section">
-    <ul>
-      <li *ngFor="let subtask of searchableColumns.subcategories">
-        <mat-checkbox [(ngModel)]="subtask.completed"
-                      [color]="subtask.color"
-                      (ngModelChange)="updateAllSearchable(); setFieldSearch(subtask.name, $event)">
-          {{subtask.name}}
-        </mat-checkbox>
-      </li>
-    </ul>
-  </span>
-    <button (click)="hideOptions()">Close settings</button>
-  </section>
-</mat-form-field>
+<app-filter [taskDisplayableColumns]="taskDisplayableColumns"
+            [taskSearchableColumns]="taskSearchableColumns"
+            (setDisplayedEvent)="setDisplayed($event)"
+            (setSearchableEvent)="setSearchable($event)"
+            (setSearchTermEvent)="setSearchTerm($event)"
+></app-filter>
 
 <mat-card *ngIf="isLoading" class="d-flex h-100 justify-content-center align-items-center table-loader position-fixed">
   <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
