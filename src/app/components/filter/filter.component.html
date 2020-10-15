@@ -5,8 +5,8 @@
       tune
       </span>
     </div>
-    <div class="custom-control-inline">
-      <mat-form-field *ngIf="!showConfiguration">
+    <div class="custom-control-inline float-right">
+      <mat-form-field>
         <mat-label>Filter <mat-icon>filter_alt</mat-icon>
         </mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Google" #input>
