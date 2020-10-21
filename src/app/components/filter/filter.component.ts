@@ -106,7 +106,7 @@ export class FilterComponent implements OnInit {
   }
 
   setFieldDisplay(fieldName: string, shouldAdd: boolean): void{
-    this.displayedColumnHolder.setField(fieldName, shouldAdd);
+    this.displayedColumnHolder.setFieldVisibility(fieldName, shouldAdd);
     this.displayedColumns = this.displayedColumnHolder.getFields();
     this.setDisplayableColumns();
   }
@@ -136,7 +136,7 @@ export class FilterComponent implements OnInit {
   }
 
   setFieldSearch(fieldName: string, shouldAdd: boolean): void{
-    this.searchableColumnHolder.setField(fieldName, shouldAdd);
+    this.searchableColumnHolder.setFieldVisibility(fieldName, shouldAdd);
     this.searchAbleColumns = this.searchableColumnHolder.getFields();
     this.setSearchableColumns();
   }

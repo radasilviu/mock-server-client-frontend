@@ -15,14 +15,14 @@ describe('ColumnHolder', () => {
 
   it('should throw when trying to add fields outside the template', () => {
     const input = 'g';
-    expect(() => {columnHolder.setField(input, true); }).toThrowError('There is no field with value g inside template: [ a,b,c,d,e ]');
+    expect(() => {columnHolder.setFieldVisibility(input, true); }).toThrowError('There is no field with value g inside template: [ a,b,c,d,e ]');
   });
 
   it('should remove given letter from correct position (first)', () => {
     const input = 'a';
     const expected: string[] = ['b', 'c', 'd', 'e'];
 
-    columnHolder.setField(input, false);
+    columnHolder.setFieldVisibility(input, false);
 
     expect(columnHolder.getFields()).toEqual(expected);
   });
@@ -31,7 +31,7 @@ describe('ColumnHolder', () => {
     const input = 'c';
     const expected: string[] = ['a', 'b', 'd', 'e'];
 
-    columnHolder.setField(input, false);
+    columnHolder.setFieldVisibility(input, false);
 
     expect(columnHolder.getFields()).toEqual(expected);
   });
@@ -40,7 +40,7 @@ describe('ColumnHolder', () => {
     const input = 'e';
     const expected: string[] = ['a', 'b', 'c', 'd'];
 
-    columnHolder.setField(input, false);
+    columnHolder.setFieldVisibility(input, false);
 
     expect(columnHolder.getFields()).toEqual(expected);
   });
@@ -49,8 +49,8 @@ describe('ColumnHolder', () => {
     const input = 'e';
     const expected: string[] = ['a', 'b', 'c', 'd', 'e'];
 
-    columnHolder.setField(input, false);
-    columnHolder.setField(input, true);
+    columnHolder.setFieldVisibility(input, false);
+    columnHolder.setFieldVisibility(input, true);
 
     expect(columnHolder.getFields()).toEqual(expected);
   });
@@ -59,8 +59,8 @@ describe('ColumnHolder', () => {
     const input = 'a';
     const expected: string[] = ['a', 'b', 'c', 'd', 'e'];
 
-    columnHolder.setField(input, false);
-    columnHolder.setField(input, true);
+    columnHolder.setFieldVisibility(input, false);
+    columnHolder.setFieldVisibility(input, true);
 
     expect(columnHolder.getFields()).toEqual(expected);
   });
@@ -69,8 +69,8 @@ describe('ColumnHolder', () => {
     const input = 'c';
     const expected: string[] = ['a', 'b', 'c', 'd', 'e'];
 
-    columnHolder.setField(input, false);
-    columnHolder.setField(input, true);
+    columnHolder.setFieldVisibility(input, false);
+    columnHolder.setFieldVisibility(input, true);
 
     expect(columnHolder.getFields()).toEqual(expected);
   });
@@ -79,7 +79,7 @@ describe('ColumnHolder', () => {
     const input = 'c';
     const expected: string[] = ['a', 'b', 'c', 'd', 'e'];
 
-    columnHolder.setField(input, true);
+    columnHolder.setFieldVisibility(input, true);
 
     expect(columnHolder.getFields()).toEqual(expected);
   });
@@ -88,8 +88,8 @@ describe('ColumnHolder', () => {
     const input = 'c';
     const expected: string[] = ['a', 'b', 'd', 'e'];
 
-    columnHolder.setField(input, false);
-    columnHolder.setField(input, false);
+    columnHolder.setFieldVisibility(input, false);
+    columnHolder.setFieldVisibility(input, false);
 
     expect(columnHolder.getFields()).toEqual(expected);
   });
@@ -97,8 +97,8 @@ describe('ColumnHolder', () => {
   it('should remove given letters correctly', () => {
     const expected: string[] = ['b', 'd', 'e'];
 
-    columnHolder.setField('a', false);
-    columnHolder.setField('c', false);
+    columnHolder.setFieldVisibility('a', false);
+    columnHolder.setFieldVisibility('c', false);
 
     expect(columnHolder.getFields()).toEqual(expected);
   });
@@ -106,10 +106,10 @@ describe('ColumnHolder', () => {
   it('should add given letters correctly', () => {
     const expected: string[] = ['a', 'b', 'c', 'd', 'e'];
 
-    columnHolder.setField('a', false);
-    columnHolder.setField('c', false);
-    columnHolder.setField('a', true);
-    columnHolder.setField('c', true);
+    columnHolder.setFieldVisibility('a', false);
+    columnHolder.setFieldVisibility('c', false);
+    columnHolder.setFieldVisibility('a', true);
+    columnHolder.setFieldVisibility('c', true);
 
     expect(columnHolder.getFields()).toEqual(expected);
   });
@@ -117,9 +117,9 @@ describe('ColumnHolder', () => {
   it('should add and remove given letters correctly', () => {
     const expected: string[] = ['a', 'b', 'd', 'e'];
 
-    columnHolder.setField('a', false);
-    columnHolder.setField('c', false);
-    columnHolder.setField('a', true);
+    columnHolder.setFieldVisibility('a', false);
+    columnHolder.setFieldVisibility('c', false);
+    columnHolder.setFieldVisibility('a', true);
 
     expect(columnHolder.getFields()).toEqual(expected);
   });
@@ -127,11 +127,11 @@ describe('ColumnHolder', () => {
   it('should remove all letters correctly', () => {
     const expected: string[] = [];
 
-    columnHolder.setField('a', false);
-    columnHolder.setField('b', false);
-    columnHolder.setField('c', false);
-    columnHolder.setField('d', false);
-    columnHolder.setField('e', false);
+    columnHolder.setFieldVisibility('a', false);
+    columnHolder.setFieldVisibility('b', false);
+    columnHolder.setFieldVisibility('c', false);
+    columnHolder.setFieldVisibility('d', false);
+    columnHolder.setFieldVisibility('e', false);
 
     expect(columnHolder.getFields()).toEqual(expected);
   });
@@ -139,17 +139,17 @@ describe('ColumnHolder', () => {
   it('should add all letters correctly', () => {
     const expected: string[] = ['a', 'b', 'c', 'd', 'e'];
 
-    columnHolder.setField('a', false);
-    columnHolder.setField('b', false);
-    columnHolder.setField('c', false);
-    columnHolder.setField('d', false);
-    columnHolder.setField('e', false);
+    columnHolder.setFieldVisibility('a', false);
+    columnHolder.setFieldVisibility('b', false);
+    columnHolder.setFieldVisibility('c', false);
+    columnHolder.setFieldVisibility('d', false);
+    columnHolder.setFieldVisibility('e', false);
 
-    columnHolder.setField('a', true);
-    columnHolder.setField('b', true);
-    columnHolder.setField('c', true);
-    columnHolder.setField('d', true);
-    columnHolder.setField('e', true);
+    columnHolder.setFieldVisibility('a', true);
+    columnHolder.setFieldVisibility('b', true);
+    columnHolder.setFieldVisibility('c', true);
+    columnHolder.setFieldVisibility('d', true);
+    columnHolder.setFieldVisibility('e', true);
 
     expect(columnHolder.getFields()).toEqual(expected);
   });

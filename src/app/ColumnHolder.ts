@@ -7,20 +7,20 @@ export class ColumnHolder{
     this.currentColumns = Object.assign([], template);
   }
 
-  setField(fieldName: string, shouldAdd: boolean): void{
+  setFieldVisibility(fieldName: string, setVisible: boolean): void{
     const fieldIndex: number = this.template.indexOf(fieldName);
     if (fieldIndex === -1) {
         throw new Error('There is no field with value ' + fieldName + ' inside template: [ ' + this.template + ' ]');
     }
-    if (shouldAdd) {
-      this.add(fieldName);
+    if (setVisible) {
+      this.setVisible(fieldName);
     }
     else {
-      this.remove(fieldName);
+      this.setInvisible(fieldName);
     }
   }
 
-  private remove(fieldName: string): void{
+  private setInvisible(fieldName: string): void{
     if (this.currentColumns.includes(fieldName))
     {
       const fieldIndex = this.currentColumns.indexOf(fieldName);
@@ -28,7 +28,7 @@ export class ColumnHolder{
     }
   }
 
-  private add(fieldToAdd: string): void{
+  private setVisible(fieldToAdd: string): void{
     const temp: string[] = [];
     this.template.forEach(
       (value) => {
