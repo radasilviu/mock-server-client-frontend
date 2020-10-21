@@ -2,9 +2,9 @@ import { TestBed } from '@angular/core/testing';
 
 import { CompanyService } from './company.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {OverlayModule} from '@angular/cdk/overlay';
+import {Env} from '../../configs/env';
 
 describe('CompanyService', () => {
   let service: CompanyService;
@@ -31,22 +31,92 @@ describe('CompanyService', () => {
       offset : 0,
       searchTerm : '',
       sortDirection : 'asc',
-      sortColumn : 'title',
+      sortColumn : 'name',
       columnsToSearchIn: [
-        'title',
-        'author',
-        'id'
+        'name'
       ]
     };
 
-    service.list(1, 1, '', [], '', 'asc').subscribe();
+    service.list(20, 0, '', ['name'], 'name', 'asc').subscribe();
 
-    const req = httpMock.expectOne('/api/company/list');
+    const req = httpMock.expectOne(Env.resourceServerRootURL + '/api/company/list');
     expect(req.request.method).toEqual('POST');
     expect(req.request.body).toEqual(expectedBody);
+  });
 
-    // Expect server to return the employee after POST
-    const expectedResponse = new HttpResponse({ status: 201, statusText: 'Created', body: expectedBody });
-    req.event(expectedResponse);
+  it('list() should send a POST request with properly formatted data _ desc', () => {
+    const expectedBody =     {
+      pageSize : 20,
+      offset : 0,
+      searchTerm : '',
+      sortDirection : 'desc',
+      sortColumn : 'name',
+      columnsToSearchIn: [
+        'name'
+      ]
+    };
+
+    service.list(20, 0, '', ['name'], 'name', 'desc').subscribe();
+
+    const req = httpMock.expectOne(Env.resourceServerRootURL + '/api/company/list');
+    expect(req.request.method).toEqual('POST');
+    expect(req.request.body).toEqual(expectedBody);
+  });
+
+  it('list() should send a POST request with properly formatted data _ unsorted', () => {
+    const expectedBody =     {
+      pageSize : 20,
+      offset : 0,
+      searchTerm : '',
+      sortDirection : '',
+      sortColumn : 'name',
+      columnsToSearchIn: [
+        'name'
+      ]
+    };
+
+    service.list(20, 0, '', ['name'], 'name', '').subscribe();
+
+    const req = httpMock.expectOne(Env.resourceServerRootURL + '/api/company/list');
+    expect(req.request.method).toEqual('POST');
+    expect(req.request.body).toEqual(expectedBody);
+  });
+
+  it('list() should send a POST request with properly formatted data _ non-0 page index', () => {
+    const expectedBody =     {
+      pageSize : 20,
+      offset : 20,
+      searchTerm : '',
+      sortDirection : '',
+      sortColumn : 'name',
+      columnsToSearchIn: [
+        'name'
+      ]
+    };
+
+    service.list(20, 1, '', ['name'], 'name', '').subscribe();
+
+    const req = httpMock.expectOne(Env.resourceServerRootURL + '/api/company/list');
+    expect(req.request.method).toEqual('POST');
+    expect(req.request.body).toEqual(expectedBody);
+  });
+
+  it('list() should send a POST request with properly formatted data _ has search term', () => {
+    const expectedBody =     {
+      pageSize : 20,
+      offset : 0,
+      searchTerm : 'searchTerm',
+      sortDirection : '',
+      sortColumn : 'name',
+      columnsToSearchIn: [
+        'name'
+      ]
+    };
+
+    service.list(20, 0, 'searchTerm', ['name'], 'name', '').subscribe();
+
+    const req = httpMock.expectOne(Env.resourceServerRootURL + '/api/company/list');
+    expect(req.request.method).toEqual('POST');
+    expect(req.request.body).toEqual(expectedBody);
   });
 });
