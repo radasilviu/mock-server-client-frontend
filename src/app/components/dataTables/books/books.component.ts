@@ -31,10 +31,11 @@ export class BooksComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private bookService: BookService, private dialog: MatDialog) { }
+  constructor(private bookService: BookService, private dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
-    localStorage.setItem("resource","books")
+    localStorage.setItem("resource", "books")
 
     this.loadData(this.pageSize, this.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);
   }
@@ -42,6 +43,7 @@ export class BooksComponent implements OnInit {
   loadData(pageSize: number, pageIndex: number, filter: string,
            sortColumn: string, sortDirection: string,
            searchAbleColumns: string[]): void {
+    localStorage.setItem("requestType", "GET");
     this.isLoading = true;
     this.bookService
       .list(pageSize, pageIndex, filter, searchAbleColumns, sortColumn, sortDirection)
@@ -74,8 +76,10 @@ export class BooksComponent implements OnInit {
   }
 
   openEditBookDialog(book: Book): void {
+    localStorage.setItem("requestType", "PUT")
+
     const dialogRef = this.dialog.open(EditBookComponent, {
-      data: { book }
+      data: {book}
     });
     dialogRef.afterClosed().subscribe(
       confirm => {
@@ -87,8 +91,9 @@ export class BooksComponent implements OnInit {
   }
 
   confirmDeleteDialog(book): void {
+
     const dialogRef = this.dialog.open(DeleteBookComponent, {
-      data: { book }
+      data: {book}
     });
     dialogRef.afterClosed().subscribe(
       confirm => {
@@ -100,6 +105,8 @@ export class BooksComponent implements OnInit {
   }
 
   delete(data): void {
+    localStorage.setItem("requestType", "DELETE")
+
     this.bookService
       .delete(data.id)
       .subscribe(response => {

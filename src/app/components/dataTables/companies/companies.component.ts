@@ -52,6 +52,7 @@ export class CompaniesComponent implements OnInit {
   }
 
   loadData(pageSize: number, pageIndex: number, filter: string, searchAbleColumns: string[], sortColumn: string, sortDirection: string): void {
+    localStorage.setItem("requestType","GET")
     this.isLoading = true;
     this.companyService
       .list(pageSize, pageIndex, filter, searchAbleColumns, sortColumn, sortDirection)
@@ -70,7 +71,10 @@ export class CompaniesComponent implements OnInit {
     this.loadData(this.pageSize, this.pageIndex, this.filter, this.searchAbleColumns, this.sortColumn, this.sortDirection);
   }
 
+
   openEditCompanyDialog(company): void {
+    localStorage.setItem("requestType","PUT")
+
     const dialogRef = this.dialog.open(EditCompanyComponent, {
       data: { company: company}
     });
@@ -97,6 +101,7 @@ export class CompaniesComponent implements OnInit {
   }
 
   delete(data): void {
+    localStorage.setItem("requestType","DELETE")
     this.companyService
       .delete(data.id)
       .subscribe(response => {
