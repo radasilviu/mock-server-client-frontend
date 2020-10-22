@@ -34,6 +34,7 @@ export class CompaniesComponent implements OnInit {
   constructor(private companyService: CompanyService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
+    localStorage.setItem("resource","companies")
     this.loadData(this.pageSize, this.pageIndex, this.filter, this.searchAbleColumns, this.sortColumn, this.sortDirection);
   }
 

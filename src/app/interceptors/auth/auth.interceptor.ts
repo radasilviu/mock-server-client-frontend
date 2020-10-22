@@ -56,10 +56,11 @@ export class AuthInterceptor implements HttpInterceptor {
 
   addAuthorizationHeader(request: any, token: Token): any {
 
+    let resource = localStorage.getItem("resource")
     const opts = {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${token.access_token}`,
-        'Resource': `dsds`
+        'Resource': `${resource}`
       })
     }
     console.log(opts)

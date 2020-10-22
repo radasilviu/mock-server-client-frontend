@@ -34,6 +34,8 @@ export class BooksComponent implements OnInit {
   constructor(private bookService: BookService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
+    localStorage.setItem("resource","books")
+
     this.loadData(this.pageSize, this.pageIndex, this.filter, this.sortColumn, this.sortDirection, this.searchAbleColumns);
   }
 

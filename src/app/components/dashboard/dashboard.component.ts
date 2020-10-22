@@ -13,6 +13,7 @@ export class DashboardComponent implements OnInit {
   secret: string;
 
   ngOnInit(): void {
+    localStorage.setItem("resource","dashboard")
     this.setSecret();
   }
 
