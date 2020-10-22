@@ -1,20 +1,17 @@
-import {
-  HttpEvent, HttpHandler,
-
-  HttpInterceptor, HttpRequest
-} from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import {HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
 import * as moment from 'moment';
-import { EMPTY, Observable } from 'rxjs';
-import { Token } from '../../models/token';
-import { TokenService } from '../../services/token/token.service';
+import {EMPTY, Observable} from 'rxjs';
+import {Token} from '../../models/token';
+import {TokenService} from '../../services/token/token.service';
 import {catchError, switchMap} from 'rxjs/operators';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private tokenService: TokenService, private router: Router) { }
+  constructor(private tokenService: TokenService, private router: Router) {
+  }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
@@ -46,8 +43,8 @@ export class AuthInterceptor implements HttpInterceptor {
               this.tokenService.logout().subscribe();
               return EMPTY;
             })
-        );
-      }else{
+          );
+      } else {
         this.tokenService.logout().subscribe();
         return EMPTY;
       }
@@ -58,9 +55,17 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   addAuthorizationHeader(request: any, token: Token): any {
-    return request.clone({
-      headers: request.headers.set('Authorization', `Bearer ${token.access_token}`)
-    });
+
+    const opts = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token.access_token}`,
+        'Resource': `dsds`
+      })
+    }
+    console.log(opts)
+    return request.clone(
+      opts
+    );
   }
 
 }
