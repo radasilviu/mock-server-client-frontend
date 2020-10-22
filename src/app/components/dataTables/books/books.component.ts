@@ -62,17 +62,11 @@ export class BooksComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
-    this.setSearchTermSubscription();
+    this.setSubscriptions();
   }
 
   ngOnDestroy(): void {
     this.filterService.resetSearchTermObservers();
-  }
-
-  setSearchTermSubscription(): void{
-    this.filterService.searchTerm.pipe(
-      debounceTime(500),
-      distinctUntilChanged()).subscribe(searchTerm => this.setSearchTerm(searchTerm));
   }
 
   reloadData(): void{
@@ -138,27 +132,35 @@ export class BooksComponent implements OnInit, OnDestroy {
       });
   }
 
-  // applyFilter(filter: string): void {
-  //   this.searchTerm = filter;
-  //   if (this.dataSource.paginator) {
-  //     this.dataSource.paginator.firstPage();
-  //   }
-  //   this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
-  // }
-
-  setDisplayed(displayedColumns: string[]): void{
-    this.displayedColumns = displayedColumns;
-    this.reloadData();
-  }
-
-  setSearchable(searchableColumns: string[]): void{
-    this.searchAbleColumns = searchableColumns;
-    this.reloadData();
-  }
-
-  setSearchTerm(term: string): void{
+  private setSearchTerm(term: string): void{
     this.searchTerm = term;
-    console.log(term + 'in book');
     this.reloadData();
+  }
+
+  private setSubscriptions(): void{
+    this.setSearchTermSubscription();
+    this.setDisplayedColumnsSubscription();
+    this.setSearchedColumnsSubscription();
+    // this.reloadData();
+  }
+
+  private setSearchTermSubscription(): void{
+    this.filterService.searchTerm.pipe(
+      debounceTime(500),
+      distinctUntilChanged()).subscribe(searchTerm => this.setSearchTerm(searchTerm));
+  }
+
+  private setDisplayedColumnsSubscription(): void{
+    this.filterService.displayAbleColumns.subscribe(displayedCol => {
+      this.displayedColumns = displayedCol;
+      console.log('di');
+    });
+  }
+
+  private setSearchedColumnsSubscription(): void{
+    this.filterService.searchAbleColumns.subscribe(searchedCol => {
+      this.searchAbleColumns = searchedCol;
+      console.log('se');
+    });
   }
 }

@@ -1,7 +1,5 @@
-import {EventEmitter, Injectable, Output} from '@angular/core';
-import {ColumnHolder} from '../../ColumnHolder';
-import {Observable, Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,15 +8,11 @@ export class FilterService {
 
   constructor() { }
 
-  displayedColumnHolder: ColumnHolder;
-  searchableColumnHolder: ColumnHolder;
-
-  displayedColumns = new Observable<string[]>();
-  searchAbleColumns = new Observable<string[]>();
+  displayAbleColumns = new Subject<string[]>();
+  searchAbleColumns = new Subject<string[]>();
   searchTerm = new Subject<string>();
 
   resetSearchTermObservers(): void{
     this.searchTerm.observers.forEach(obs => obs.complete());
   }
-
 }

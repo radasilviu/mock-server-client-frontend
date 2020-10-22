@@ -1,0 +1,53 @@
+<div class="custom-control-inline">
+  <div class="custom-control-inline">
+    <section class="m-3">
+          <span>
+            <mat-checkbox
+              [checked]="displayAll"
+              [indeterminate]="checkIfSomeDisplayable()"
+              (change)="setAllColumnsDisplayable($event.checked)">
+              {{data.taskDisplayableColumns.name}}
+            </mat-checkbox>
+          </span>
+      <span class="example-list-section">
+            <ul>
+              <li *ngFor="let subtask of data.taskDisplayableColumns.subcategories">
+                <mat-checkbox [(ngModel)]="subtask.completed"
+                              [color]="subtask.color"
+                              (ngModelChange)="checkIfAllDisplayable(); setFieldDisplay(subtask.name, $event)">
+                  {{subtask.name}}
+                </mat-checkbox>
+              </li>
+            </ul>
+          </span>
+    </section>
+    <section class="float-left m-3">
+          <span>
+            <mat-checkbox
+              [checked]="searchAll"
+              [indeterminate]="checkIfSomeSearchable()"
+              (change)="setAllColumnsSearchable($event.checked)">
+              {{data.taskSearchableColumns.name}}
+            </mat-checkbox>
+          </span>
+      <span class="example-list-section">
+              <ul>
+                <li *ngFor="let subtask of data.taskSearchableColumns.subcategories">
+                  <mat-checkbox [(ngModel)]="subtask.completed"
+                                [color]="subtask.color"
+                                (ngModelChange)="checkIfAllSearchable(); setFieldSearch(subtask.name, $event)">
+                    {{subtask.name}}
+                  </mat-checkbox>
+                </li>
+              </ul>
+          </span>
+    </section>
+  </div>
+</div>
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close>Cancel</button>
+
+  <button mat-raised-button color="primary" (click)="onSubmit()">
+    Update
+  </button>
+</mat-dialog-actions>
