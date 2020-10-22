@@ -17,4 +17,8 @@ export class FilterService {
   searchAbleColumns = new Observable<string[]>();
   searchTerm = new Subject<string>();
 
+  resetSearchTermObservers(): void{
+    this.searchTerm.observers.forEach(obs => obs.complete());
+  }
+
 }

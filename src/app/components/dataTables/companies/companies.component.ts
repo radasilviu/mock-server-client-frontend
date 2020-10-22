@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {Company} from '../../../models/company';
 import {CompanyService} from '../../../services/company/company.service';
@@ -16,7 +16,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
   templateUrl: './companies.component.html',
   styleUrls: ['./companies.component.css']
 })
-export class CompaniesComponent implements OnInit {
+export class CompaniesComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['id', 'name', 'industry', 'actions'];
   searchAbleColumns: string[] = ['id', 'name', 'industry'];
@@ -63,6 +63,10 @@ export class CompaniesComponent implements OnInit {
   ngOnInit(): void {
     this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.searchAbleColumns, this.sortColumn, this.sortDirection);
     this.setSearchTermSubscription();
+  }
+
+  ngOnDestroy(): void {
+    this.filterService.resetSearchTermObservers();
   }
 
   setSearchTermSubscription(): void{

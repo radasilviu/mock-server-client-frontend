@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {Book} from '../../../models/book';
 import {MatPaginator} from '@angular/material/paginator';
@@ -16,7 +16,7 @@ import {FilterService} from '../../../services/filter/filter.service';
   selector: 'app-books',
   templateUrl: './books.component.html',
   styleUrls: ['./books.component.css']})
-export class BooksComponent implements OnInit {
+export class BooksComponent implements OnInit, OnDestroy {
 
   constructor(private bookService: BookService,
               private filterService: FilterService,
@@ -63,6 +63,10 @@ export class BooksComponent implements OnInit {
   ngOnInit(): void {
     this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
     this.setSearchTermSubscription();
+  }
+
+  ngOnDestroy(): void {
+    this.filterService.resetSearchTermObservers();
   }
 
   setSearchTermSubscription(): void{
