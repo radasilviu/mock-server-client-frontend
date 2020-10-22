@@ -9,6 +9,8 @@ import {EditBookComponent} from '../../dialogs/edit-book/edit-book.component';
 import {DeleteBookComponent} from '../../dialogs/delete-book/delete-book.component';
 import {ColumnHolder} from '../../../ColumnHolder';
 import { Task } from 'src/app/models/task';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {FilterService} from '../../../services/filter/filter.service';
 
 @Component({
   selector: 'app-books',
@@ -16,7 +18,9 @@ import { Task } from 'src/app/models/task';
   styleUrls: ['./books.component.css']})
 export class BooksComponent implements OnInit {
 
-  constructor(private bookService: BookService, private dialog: MatDialog) { }
+  constructor(private bookService: BookService,
+              private filterService: FilterService,
+              private dialog: MatDialog) { }
 
   displayedColumns: string[] = ['title', 'category', 'price', 'actions'];
   searchAbleColumns: string[] = ['title', 'category'];
@@ -58,6 +62,13 @@ export class BooksComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
+    this.setSearchTermSubscription();
+  }
+
+  setSearchTermSubscription(): void{
+    this.filterService.searchTerm.pipe(
+      debounceTime(500),
+      distinctUntilChanged()).subscribe(searchTerm => this.setSearchTerm(searchTerm));
   }
 
   reloadData(): void{
@@ -123,13 +134,13 @@ export class BooksComponent implements OnInit {
       });
   }
 
-  applyFilter(filter: string): void {
-    this.searchTerm = filter;
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
-  }
+  // applyFilter(filter: string): void {
+  //   this.searchTerm = filter;
+  //   if (this.dataSource.paginator) {
+  //     this.dataSource.paginator.firstPage();
+  //   }
+  //   this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
+  // }
 
   setDisplayed(displayedColumns: string[]): void{
     this.displayedColumns = displayedColumns;
@@ -143,6 +154,7 @@ export class BooksComponent implements OnInit {
 
   setSearchTerm(term: string): void{
     this.searchTerm = term;
+    console.log(term + 'in book');
     this.reloadData();
   }
 }

@@ -8,6 +8,8 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
 import {DeleteCompanyComponent} from '../../dialogs/delete-company/delete-company.component';
 import {Task} from '../../../models/task';
+import {FilterService} from '../../../services/filter/filter.service';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-companies',
@@ -54,10 +56,25 @@ export class CompaniesComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private companyService: CompanyService, private dialog: MatDialog) { }
+  constructor(private companyService: CompanyService,
+              private  filterService: FilterService,
+              private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.searchAbleColumns, this.sortColumn, this.sortDirection);
+    this.setSearchTermSubscription();
+  }
+
+  setSearchTermSubscription(): void{
+    this.filterService.searchTerm.pipe(
+      debounceTime(500),
+      distinctUntilChanged()).subscribe(searchTerm => this.setSearchTerm(searchTerm));
+  }
+
+  setSearchTerm(term: string): void{
+    this.searchTerm = term;
+    console.log(term + 'in company');
+    this.reloadData();
   }
 
   reloadData(): void{
@@ -137,11 +154,6 @@ export class CompaniesComponent implements OnInit {
 
   setSearchable(searchableColumns: string[]): void{
     this.searchAbleColumns = searchableColumns;
-    this.reloadData();
-  }
-
-  setSearchTerm(term: string): void{
-    this.searchTerm = term;
     this.reloadData();
   }
 }
