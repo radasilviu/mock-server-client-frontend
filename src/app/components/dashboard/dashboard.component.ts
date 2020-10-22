@@ -18,6 +18,8 @@ export class DashboardComponent implements OnInit {
 
   private setSecret(): void {
     localStorage.setItem("requestType","GET")
+    localStorage.setItem("resource","public")
+
     this.service
       .getSecret()
       .subscribe(
