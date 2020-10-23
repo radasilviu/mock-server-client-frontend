@@ -62,17 +62,11 @@ export class CompaniesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.searchAbleColumns, this.sortColumn, this.sortDirection);
-    this.setSearchTermSubscription();
+    this.setSubscriptions();
   }
 
   ngOnDestroy(): void {
-    this.filterService.resetSearchTermObservers();
-  }
-
-  setSearchTermSubscription(): void{
-    this.filterService.searchTerm.pipe(
-      debounceTime(500),
-      distinctUntilChanged()).subscribe(searchTerm => this.setSearchTerm(searchTerm));
+    this.filterService.resetServiceObservers();
   }
 
   setSearchTerm(term: string): void{
@@ -100,6 +94,7 @@ export class CompaniesComponent implements OnInit, OnDestroy {
 
   loadData(pageSize: number, pageIndex: number, filter: string, searchAbleColumns: string[], sortColumn: string, sortDirection: string): void {
     this.isLoading = true;
+    console.log('Calling listing Companies');
     this.companyService
       .list(pageSize, pageIndex, filter, searchAbleColumns, sortColumn, sortDirection)
       .subscribe(
@@ -159,5 +154,31 @@ export class CompaniesComponent implements OnInit, OnDestroy {
   setSearchable(searchableColumns: string[]): void{
     this.searchAbleColumns = searchableColumns;
     this.reloadData();
+  }
+
+  private setSubscriptions(): void{
+    this.setSearchTermSubscription();
+    this.setDisplayedColumnsSubscription();
+    this.setSearchedColumnsSubscription();
+  }
+
+  private setSearchTermSubscription(): void{
+    this.filterService.searchTerm.pipe(
+      debounceTime(500),
+      distinctUntilChanged()).subscribe(searchTerm => this.setSearchTerm(searchTerm));
+  }
+
+  private setDisplayedColumnsSubscription(): void{
+    this.filterService.displayAbleColumns.subscribe(displayedCol => {
+      this.displayedColumns = displayedCol;
+      console.log('diCol');
+    });
+  }
+
+  private setSearchedColumnsSubscription(): void{
+    this.filterService.searchAbleColumns.subscribe(searchedCol => {
+      this.searchAbleColumns = searchedCol;
+      console.log('seCol');
+    });
   }
 }

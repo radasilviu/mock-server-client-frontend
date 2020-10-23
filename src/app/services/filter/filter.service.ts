@@ -12,7 +12,11 @@ export class FilterService {
   searchAbleColumns = new Subject<string[]>();
   searchTerm = new Subject<string>();
 
-  resetSearchTermObservers(): void{
+  resetServiceObservers(): void{
     this.searchTerm.observers.forEach(obs => obs.complete());
   }
+
+  // resetSearchTermObservers(): void{
+  //   this.searchTerm.observers.forEach(obs => obs.complete());
+  // }
 }

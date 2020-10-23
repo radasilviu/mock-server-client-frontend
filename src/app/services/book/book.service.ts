@@ -14,6 +14,7 @@ export class BookService {
   constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
 
   list(limit: number, pageIndex: number, filter: string = '', columns: string[], sortColumn: string, sortDirection: string): any {
+    console.log('Listing books');
     const data = {
       pageSize : limit,
       offset: pageIndex * limit,

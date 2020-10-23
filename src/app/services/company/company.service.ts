@@ -14,6 +14,7 @@ export class CompanyService {
   constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
 
   list(limit: number, pageIndex: number, filter: string = '', columns: string[], sortColumn: string, sortDirection: string): any {
+    console.log('Listing Companies');
     const data = {
       pageSize : limit,
       offset: pageIndex * limit,

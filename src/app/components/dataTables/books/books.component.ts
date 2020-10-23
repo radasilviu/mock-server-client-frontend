@@ -66,7 +66,7 @@ export class BooksComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.filterService.resetSearchTermObservers();
+    this.filterService.resetServiceObservers();
   }
 
   reloadData(): void{
@@ -141,7 +141,6 @@ export class BooksComponent implements OnInit, OnDestroy {
     this.setSearchTermSubscription();
     this.setDisplayedColumnsSubscription();
     this.setSearchedColumnsSubscription();
-    // this.reloadData();
   }
 
   private setSearchTermSubscription(): void{
@@ -153,14 +152,14 @@ export class BooksComponent implements OnInit, OnDestroy {
   private setDisplayedColumnsSubscription(): void{
     this.filterService.displayAbleColumns.subscribe(displayedCol => {
       this.displayedColumns = displayedCol;
-      console.log('di');
+      console.log('diCol');
     });
   }
 
   private setSearchedColumnsSubscription(): void{
     this.filterService.searchAbleColumns.subscribe(searchedCol => {
       this.searchAbleColumns = searchedCol;
-      console.log('se');
+      console.log('seCol');
     });
   }
 }

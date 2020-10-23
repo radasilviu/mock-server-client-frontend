@@ -30,6 +30,16 @@ export class FilterConfigComponent implements OnInit {
     this.searchableColumnHolder = this.getColumnHolderFromTask(this.data.taskSearchableColumns, false);
   }
 
+  onSubmit(): void {
+    if (this.searchAbleColumns) {
+      this.filterService.searchAbleColumns.next(this.searchAbleColumns);
+    }
+    if (this.displayAbleColumns) {
+      this.filterService.displayAbleColumns.next(this.displayAbleColumns);
+    }
+    this.dialogRef.close();
+  }
+
   // <editor-fold>
   // Display
 
@@ -103,15 +113,5 @@ export class FilterConfigComponent implements OnInit {
       colList.push('actions');
     }
     return new ColumnHolder(colList);
-  }
-
-  onSubmit(): void {
-    if (this.searchAbleColumns) {
-    this.filterService.searchAbleColumns.next(this.searchAbleColumns);
-    }
-    if (this.displayAbleColumns) {
-    this.filterService.displayAbleColumns.next(this.displayAbleColumns);
-    }
-    this.dialogRef.close();
   }
 }
