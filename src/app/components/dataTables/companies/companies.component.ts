@@ -7,7 +7,7 @@ import {EditCompanyComponent} from '../../dialogs/edit-company/edit-company.comp
 import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
 import {DeleteCompanyComponent} from '../../dialogs/delete-company/delete-company.component';
-import {Task} from '../../../models/task';
+import {FilterSettings} from '../../../models/filterSettings';
 import {FilterService} from '../../../services/filter/filter.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
@@ -22,7 +22,7 @@ export class CompaniesComponent implements OnInit, OnDestroy {
   searchAbleColumns: string[] = ['id', 'name', 'industry'];
   searchTerm: string;
 
-  taskDisplayableColumns: Task = {
+  taskDisplayableColumns: FilterSettings = {
     name: 'Fields to display',
     completed: true,
     color: 'primary',
@@ -32,7 +32,7 @@ export class CompaniesComponent implements OnInit, OnDestroy {
       {name: 'industry', completed: true, color: 'primary'}
     ]
   };
-  taskSearchableColumns: Task = {
+  taskSearchableColumns: FilterSettings = {
     name: 'Fields to search in',
     completed: true,
     color: 'primary',

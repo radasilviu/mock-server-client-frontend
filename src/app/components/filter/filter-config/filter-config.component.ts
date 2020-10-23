@@ -1,9 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FilterService} from '../../../services/filter/filter.service';
-import {Task} from '../../../models/task';
+import {FilterSettings} from '../../../models/filterSettings';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {ColumnHolder} from '../../../helpers/ColumnHolder/ColumnHolder';
-import {FilterDialogTasks} from '../../../models/FilterDialogTasks';
+import {FilterDialogSettings} from '../../../models/FilterDialogSettings';
 
 @Component({
   selector: 'app-filter-config',
@@ -14,7 +14,7 @@ export class FilterConfigComponent implements OnInit {
 
   constructor(private filterService: FilterService,
               public dialogRef: MatDialogRef<FilterConfigComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: FilterDialogTasks) { }
+              @Inject(MAT_DIALOG_DATA) public data: FilterDialogSettings) { }
 
   displayAbleColumns: string[];
   searchAbleColumns: string[];
@@ -47,11 +47,11 @@ export class FilterConfigComponent implements OnInit {
 
   // <editor-fold>
 
-  updateAllComplete(task: Task): void{
+  updateAllComplete(task: FilterSettings): void{
     task.completed = task.subcategories != null && task.subcategories.every(t => t.completed);
   }
 
-  someComplete(task: Task): boolean {
+  someComplete(task: FilterSettings): boolean {
     if (task.subcategories == null) {
       return false;
     }
@@ -93,7 +93,7 @@ export class FilterConfigComponent implements OnInit {
   }
   // </editor-fold>
 
-  private getColumnHolderFromTask(taskDisplayableColumns: Task, appendActionsColumn: boolean): ColumnHolder{
+  private getColumnHolderFromTask(taskDisplayableColumns: FilterSettings, appendActionsColumn: boolean): ColumnHolder{
     const colList: string[] = [];
     taskDisplayableColumns.subcategories.forEach(t => {
       colList.push(t.name);

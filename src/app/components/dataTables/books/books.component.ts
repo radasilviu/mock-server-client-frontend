@@ -8,7 +8,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {EditBookComponent} from '../../dialogs/edit-book/edit-book.component';
 import {DeleteBookComponent} from '../../dialogs/delete-book/delete-book.component';
 import {ColumnHolder} from '../../../helpers/ColumnHolder/ColumnHolder';
-import { Task } from 'src/app/models/task';
+import { FilterSettings } from 'src/app/models/filterSettings';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {FilterService} from '../../../services/filter/filter.service';
 
@@ -26,7 +26,7 @@ export class BooksComponent implements OnInit, OnDestroy {
   searchAbleColumns: string[] = ['title', 'category'];
   searchTerm: string;
 
-  taskDisplayableColumns: Task = {
+  taskDisplayableColumns: FilterSettings = {
     name: 'Fields to display',
     completed: true,
     color: 'primary',
@@ -36,7 +36,7 @@ export class BooksComponent implements OnInit, OnDestroy {
       {name: 'price', completed: true, color: 'primary'}
     ]
   };
-  taskSearchableColumns: Task = {
+  taskSearchableColumns: FilterSettings = {
     name: 'Fields to search in',
     completed: true,
     color: 'primary',
