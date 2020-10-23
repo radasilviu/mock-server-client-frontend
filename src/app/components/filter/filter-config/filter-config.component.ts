@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {FilterService} from '../../../services/filter/filter.service';
 import {Task} from '../../../models/task';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {ColumnHolder} from '../../../ColumnHolder';
+import {ColumnHolder} from '../../../helpers/ColumnHolder/ColumnHolder';
 import {FilterDialogTasks} from '../../../models/FilterDialogTasks';
 
 @Component({

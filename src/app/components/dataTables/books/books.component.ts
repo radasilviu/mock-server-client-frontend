@@ -7,7 +7,7 @@ import {BookService} from '../../../services/book/book.service';
 import {MatDialog} from '@angular/material/dialog';
 import {EditBookComponent} from '../../dialogs/edit-book/edit-book.component';
 import {DeleteBookComponent} from '../../dialogs/delete-book/delete-book.component';
-import {ColumnHolder} from '../../../ColumnHolder';
+import {ColumnHolder} from '../../../helpers/ColumnHolder/ColumnHolder';
 import { Task } from 'src/app/models/task';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {FilterService} from '../../../services/filter/filter.service';
