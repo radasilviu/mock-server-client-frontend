@@ -69,10 +69,6 @@ export class BooksComponent implements OnInit, OnDestroy {
     this.filterService.resetServiceObservers();
   }
 
-  reloadData(): void{
-    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
-  }
-
   loadData(pageSize: number, pageIndex: number, filter: string, sortColumn: string, sortDirection: string,
            searchAbleColumns: string[]): void {
     this.isLoading = true;
@@ -132,11 +128,6 @@ export class BooksComponent implements OnInit, OnDestroy {
       });
   }
 
-  private setSearchTerm(term: string): void{
-    this.searchTerm = term;
-    this.reloadData();
-  }
-
   private setSubscriptions(): void{
     this.setSearchTermSubscription();
     this.setDisplayedColumnsSubscription();
@@ -152,14 +143,21 @@ export class BooksComponent implements OnInit, OnDestroy {
   private setDisplayedColumnsSubscription(): void{
     this.filterService.displayAbleColumns.subscribe(displayedCol => {
       this.displayedColumns = displayedCol;
-      console.log('diCol');
     });
   }
 
   private setSearchedColumnsSubscription(): void{
     this.filterService.searchAbleColumns.subscribe(searchedCol => {
       this.searchAbleColumns = searchedCol;
-      console.log('seCol');
     });
+  }
+
+  private setSearchTerm(term: string): void{
+    this.searchTerm = term;
+    this.reloadData();
+  }
+
+  private reloadData(): void{
+    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
   }
 }

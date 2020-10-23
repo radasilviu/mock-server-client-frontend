@@ -69,16 +69,6 @@ export class CompaniesComponent implements OnInit, OnDestroy {
     this.filterService.resetServiceObservers();
   }
 
-  setSearchTerm(term: string): void{
-    this.searchTerm = term;
-    console.log(term + 'in company');
-    this.reloadData();
-  }
-
-  reloadData(): void{
-    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
-  }
-
   changePage(event): void {
     this.pageSize = event.pageSize;
     this.loadData(this.pageSize, event.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
@@ -154,14 +144,21 @@ export class CompaniesComponent implements OnInit, OnDestroy {
   private setDisplayedColumnsSubscription(): void{
     this.filterService.displayAbleColumns.subscribe(displayedCol => {
       this.displayedColumns = displayedCol;
-      console.log('diCol');
     });
   }
 
   private setSearchedColumnsSubscription(): void{
     this.filterService.searchAbleColumns.subscribe(searchedCol => {
       this.searchAbleColumns = searchedCol;
-      console.log('seCol');
     });
+  }
+
+  private setSearchTerm(term: string): void{
+    this.searchTerm = term;
+    this.reloadData();
+  }
+
+  private reloadData(): void{
+    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
   }
 }
