@@ -13,10 +13,20 @@ export class FilterService {
   searchTerm = new Subject<string>();
 
   resetServiceObservers(): void{
+    this.resetSearchTermObservers();
+    this.resetDisplayableColumnsObservers();
+    this.resetSearchableColumnsObservers();
+  }
+
+  private resetSearchTermObservers(): void{
     this.searchTerm.observers.forEach(obs => obs.complete());
   }
 
-  // resetSearchTermObservers(): void{
-  //   this.searchTerm.observers.forEach(obs => obs.complete());
-  // }
+  private resetDisplayableColumnsObservers(): void{
+    this.displayAbleColumns.observers.forEach(obs => obs.complete());
+  }
+
+  private resetSearchableColumnsObservers(): void{
+    this.searchAbleColumns.observers.forEach(obs => obs.complete());
+  }
 }
