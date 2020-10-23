@@ -3,7 +3,7 @@
     <section class="m-3">
           <span>
             <mat-checkbox
-              [checked]="displayAll"
+              [checked]="data.taskDisplayableColumns.completed"
               [indeterminate]="checkIfSomeDisplayable()"
               (change)="setAllColumnsDisplayable($event.checked)">
               {{data.taskDisplayableColumns.name}}
@@ -24,7 +24,7 @@
     <section class="float-left m-3">
           <span>
             <mat-checkbox
-              [checked]="searchAll"
+              [checked]="data.taskSearchableColumns.completed"
               [indeterminate]="checkIfSomeSearchable()"
               (change)="setAllColumnsSearchable($event.checked)">
               {{data.taskSearchableColumns.name}}

@@ -22,9 +22,6 @@ export class FilterConfigComponent implements OnInit {
   displayedColumnHolder: ColumnHolder;
   searchableColumnHolder: ColumnHolder;
 
-  displayAll = true;
-  searchAll = false;
-
   ngOnInit(): void {
     this.displayedColumnHolder = this.getColumnHolderFromTask(this.data.taskDisplayableColumns, true);
     this.searchableColumnHolder = this.getColumnHolderFromTask(this.data.taskSearchableColumns, false);
@@ -51,21 +48,37 @@ export class FilterConfigComponent implements OnInit {
   // <editor-fold>
   // Display
 
+  checkIfAllChecked(task: Task): void{
+    task.completed = task.subcategories != null &&
+                     task.subcategories.every(t => t.completed);
+    console.log(task.completed + ' is task.completed');
+  }
+
   checkIfAllDisplayable(): void{
-    this.displayAll = this.data.taskDisplayableColumns.subcategories != null &&
-      this.data.taskDisplayableColumns.subcategories
-        .every(t => t.completed);
+    // this.displayAll = this.data.taskDisplayableColumns.subcategories != null &&
+    //   this.data.taskDisplayableColumns.subcategories
+    //     .every(t => t.completed);
+    this.checkIfAllChecked(this.data.taskDisplayableColumns);
+  }
+
+  checkIfSomeChecked(task: Task): boolean {
+    if (task.subcategories == null) {
+      return false;
+    }
+    console.log('task: ' + task.completed);
+    // return task.subcategories.filter(t => t.completed).length > 0 && !task.completed;
+    return task.subcategories.filter(t => t.completed).length > 0;
   }
 
   checkIfSomeDisplayable(): boolean {
-    if (this.data.taskDisplayableColumns.subcategories == null) {
-      return false;
-    }
-    return this.data.taskDisplayableColumns.subcategories.filter(t => t.completed).length > 0 && !this.displayAll;
+    // if (this.data.taskDisplayableColumns.subcategories == null) {
+    //   return false;
+    // }
+    // return this.data.taskDisplayableColumns.subcategories.filter(t => t.completed).length > 0 && !this.displayAll;
+    return this.checkIfSomeChecked(this.data.taskDisplayableColumns);
   }
 
   setAllColumnsDisplayable(completed: boolean): void{
-    this.displayAll = completed;
     if (this.data.taskDisplayableColumns.subcategories == null) {
       return;
     }
@@ -83,20 +96,21 @@ export class FilterConfigComponent implements OnInit {
   // Search
 
   checkIfAllSearchable(): void{
-    this.searchAll = this.data.taskSearchableColumns.subcategories != null &&
-      this.data.taskSearchableColumns.subcategories
-        .every(t => t.completed);
+    // this.searchAll = this.data.taskSearchableColumns.subcategories != null &&
+    //   this.data.taskSearchableColumns.subcategories
+    //     .every(t => t.completed);
+    this.checkIfAllChecked(this.data.taskSearchableColumns);
   }
 
   checkIfSomeSearchable(): boolean {
-    if (this.data.taskSearchableColumns.subcategories == null) {
-      return false;
-    }
-    return this.data.taskSearchableColumns.subcategories.filter(t => t.completed).length > 0 && !this.searchAll;
+    // if (this.data.taskSearchableColumns.subcategories == null) {
+    //   return false;
+    // }
+    // return this.data.taskSearchableColumns.subcategories.filter(t => t.completed).length > 0 && !this.searchAll;
+    return this.checkIfSomeChecked(this.data.taskSearchableColumns);
   }
 
   setAllColumnsSearchable(completed: boolean): void{
-    this.searchAll = completed;
     if (this.data.taskSearchableColumns.subcategories == null) {
       return;
     }
