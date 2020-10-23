@@ -3,7 +3,7 @@ import {FilterService} from '../../../services/filter/filter.service';
 import {Task} from '../../../models/task';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {ColumnHolder} from '../../../ColumnHolder';
-import {FilterDialogTasks} from '../../../FilterDialogTasks';
+import {FilterDialogTasks} from '../../../models/FilterDialogTasks';
 
 @Component({
   selector: 'app-filter-config',

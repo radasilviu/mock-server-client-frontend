@@ -1,4 +1,4 @@
-import {Task} from './models/task';
+import {Task} from './task';
 
 export interface FilterDialogTasks {
   taskDisplayableColumns: Task;
