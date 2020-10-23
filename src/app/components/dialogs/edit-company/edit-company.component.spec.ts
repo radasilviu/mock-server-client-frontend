@@ -14,7 +14,13 @@ describe('EditCompanyComponent', () => {
       imports: [HttpClientTestingModule, MatSnackBarModule],
       declarations: [ EditCompanyComponent ],
       providers: [
-        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: {
+            company: {
+              id: 1,
+              industry: 'Media Production',
+              name: 'Trantow Inc'
+            }
+          }},
         { provide: MatDialogRef, useValue: {} }],
     })
     .compileComponents();
