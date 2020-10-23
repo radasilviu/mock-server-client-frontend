@@ -61,7 +61,7 @@ export class CompaniesComponent implements OnInit, OnDestroy {
               private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.searchAbleColumns, this.sortColumn, this.sortDirection);
+    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
     this.setSubscriptions();
   }
 
@@ -76,23 +76,16 @@ export class CompaniesComponent implements OnInit, OnDestroy {
   }
 
   reloadData(): void{
-    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.searchAbleColumns, this.sortColumn, this.sortDirection);
-  }
-
-  applyFilter(event: Event): void {
-    this.searchTerm = (event.target as HTMLInputElement).value;
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.searchAbleColumns, this.sortColumn, this.sortDirection);
+    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
   }
 
   changePage(event): void {
     this.pageSize = event.pageSize;
-    this.loadData(this.pageSize, event.pageIndex, this.searchTerm, this.searchAbleColumns, this.sortColumn, this.sortDirection);
+    this.loadData(this.pageSize, event.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
   }
 
-  loadData(pageSize: number, pageIndex: number, filter: string, searchAbleColumns: string[], sortColumn: string, sortDirection: string): void {
+  loadData(pageSize: number, pageIndex: number, filter: string, sortColumn: string, sortDirection: string,
+           searchAbleColumns: string[]): void {
     this.isLoading = true;
     console.log('Calling listing Companies');
     this.companyService
@@ -109,7 +102,7 @@ export class CompaniesComponent implements OnInit, OnDestroy {
   sortData(sort: Sort): void {
     this.sortColumn = sort.active;
     this.sortDirection = sort.direction;
-    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.searchAbleColumns, this.sortColumn, this.sortDirection);
+    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
   }
 
   openEditCompanyDialog(company): void {
@@ -119,7 +112,7 @@ export class CompaniesComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(
       confirm => {
         if (confirm) {
-          this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.searchAbleColumns, this.sortColumn, this.sortDirection);
+          this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
         }
       }
     );
@@ -142,18 +135,8 @@ export class CompaniesComponent implements OnInit, OnDestroy {
     this.companyService
       .delete(data.id)
       .subscribe(response => {
-        this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.searchAbleColumns, this.sortColumn, this.sortDirection);
+        this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
       });
-  }
-
-  setDisplayed(displayedColumns: string[]): void{
-    this.displayedColumns = displayedColumns;
-    this.reloadData();
-  }
-
-  setSearchable(searchableColumns: string[]): void{
-    this.searchAbleColumns = searchableColumns;
-    this.reloadData();
   }
 
   private setSubscriptions(): void{

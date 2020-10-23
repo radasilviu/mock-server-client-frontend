@@ -1,8 +1,5 @@
 <app-filter [taskDisplayableColumns]="taskDisplayableColumns"
             [taskSearchableColumns]="taskSearchableColumns"
-            (setDisplayedEvent)="setDisplayed($event)"
-            (setSearchableEvent)="setSearchable($event)"
-            (setSearchTermEvent)="setSearchTerm($event)"
 ></app-filter>
 
 <mat-card *ngIf="isLoading" class="d-flex h-100 justify-content-center align-items-center table-loader position-fixed">
