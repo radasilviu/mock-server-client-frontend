@@ -4,8 +4,8 @@
           <span>
             <mat-checkbox
               [checked]="data.taskDisplayableColumns.completed"
-              [indeterminate]="checkIfSomeDisplayable()"
-              (change)="setAllColumnsDisplayable($event.checked)">
+              [indeterminate]="someComplete(data.taskDisplayableColumns)"
+              (change)="setAllDisplayable($event.checked)">
               {{data.taskDisplayableColumns.name}}
             </mat-checkbox>
           </span>
@@ -14,7 +14,7 @@
               <li *ngFor="let subtask of data.taskDisplayableColumns.subcategories">
                 <mat-checkbox [(ngModel)]="subtask.completed"
                               [color]="subtask.color"
-                              (ngModelChange)="checkIfAllDisplayable(); setFieldDisplay(subtask.name, $event)">
+                              (ngModelChange)="updateAllComplete(data.taskDisplayableColumns); setFieldDisplay(subtask.name, $event)">
                   {{subtask.name}}
                 </mat-checkbox>
               </li>
@@ -25,8 +25,8 @@
           <span>
             <mat-checkbox
               [checked]="data.taskSearchableColumns.completed"
-              [indeterminate]="checkIfSomeSearchable()"
-              (change)="setAllColumnsSearchable($event.checked)">
+              [indeterminate]="someComplete(data.taskSearchableColumns)"
+              (change)="setAllSearchable($event.checked)">
               {{data.taskSearchableColumns.name}}
             </mat-checkbox>
           </span>
@@ -35,7 +35,7 @@
                 <li *ngFor="let subtask of data.taskSearchableColumns.subcategories">
                   <mat-checkbox [(ngModel)]="subtask.completed"
                                 [color]="subtask.color"
-                                (ngModelChange)="checkIfAllSearchable(); setFieldSearch(subtask.name, $event)">
+                                (ngModelChange)="updateAllComplete(data.taskSearchableColumns); setFieldSearch(subtask.name, $event)">
                     {{subtask.name}}
                   </mat-checkbox>
                 </li>

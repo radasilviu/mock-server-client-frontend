@@ -25,8 +25,8 @@ export class FilterConfigComponent implements OnInit {
   ngOnInit(): void {
     this.displayedColumnHolder = this.getColumnHolderFromTask(this.data.taskDisplayableColumns, true);
     this.searchableColumnHolder = this.getColumnHolderFromTask(this.data.taskSearchableColumns, false);
-    this.checkIfAllDisplayable();
-    this.checkIfAllSearchable();
+    this.updateAllComplete(this.data.taskDisplayableColumns);
+    this.updateAllComplete(this.data.taskSearchableColumns);
   }
 
   onSubmit(): void {
@@ -46,78 +46,45 @@ export class FilterConfigComponent implements OnInit {
   }
 
   // <editor-fold>
-  // Display
 
-  checkIfAllChecked(task: Task): void{
-    task.completed = task.subcategories != null &&
-                     task.subcategories.every(t => t.completed);
-    console.log(task.completed + ' is task.completed');
+  updateAllComplete(task: Task): void{
+    task.completed = task.subcategories != null && task.subcategories.every(t => t.completed);
   }
 
-  checkIfAllDisplayable(): void{
-    // this.displayAll = this.data.taskDisplayableColumns.subcategories != null &&
-    //   this.data.taskDisplayableColumns.subcategories
-    //     .every(t => t.completed);
-    this.checkIfAllChecked(this.data.taskDisplayableColumns);
-  }
-
-  checkIfSomeChecked(task: Task): boolean {
+  someComplete(task: Task): boolean {
     if (task.subcategories == null) {
       return false;
     }
-    console.log('task: ' + task.completed);
-    // return task.subcategories.filter(t => t.completed).length > 0 && !task.completed;
-    return task.subcategories.filter(t => t.completed).length > 0;
+    return task.subcategories.filter(t => t.completed).length > 0 && !task.completed;
   }
 
-  checkIfSomeDisplayable(): boolean {
-    // if (this.data.taskDisplayableColumns.subcategories == null) {
-    //   return false;
-    // }
-    // return this.data.taskDisplayableColumns.subcategories.filter(t => t.completed).length > 0 && !this.displayAll;
-    return this.checkIfSomeChecked(this.data.taskDisplayableColumns);
-  }
-
-  setAllColumnsDisplayable(completed: boolean): void{
-    if (this.data.taskDisplayableColumns.subcategories == null) {
+  setAllDisplayable(completed: boolean): void{
+    const task = this.data.taskDisplayableColumns;
+    task.completed = completed;
+    if (task.subcategories == null) {
       return;
     }
-    this.data.taskDisplayableColumns.subcategories.forEach(t => {
+    task.subcategories.forEach(t => {
       t.completed = completed;
       this.setFieldDisplay(t.name, completed);
     });
   }
 
-  setFieldDisplay(fieldName: string, shouldAdd: boolean): void{
-    this.displayedColumnHolder.setFieldVisibility(fieldName, shouldAdd);
-    this.displayAbleColumns = this.displayedColumnHolder.getFields();
-  }
-
-  // Search
-
-  checkIfAllSearchable(): void{
-    // this.searchAll = this.data.taskSearchableColumns.subcategories != null &&
-    //   this.data.taskSearchableColumns.subcategories
-    //     .every(t => t.completed);
-    this.checkIfAllChecked(this.data.taskSearchableColumns);
-  }
-
-  checkIfSomeSearchable(): boolean {
-    // if (this.data.taskSearchableColumns.subcategories == null) {
-    //   return false;
-    // }
-    // return this.data.taskSearchableColumns.subcategories.filter(t => t.completed).length > 0 && !this.searchAll;
-    return this.checkIfSomeChecked(this.data.taskSearchableColumns);
-  }
-
-  setAllColumnsSearchable(completed: boolean): void{
-    if (this.data.taskSearchableColumns.subcategories == null) {
+  setAllSearchable(completed: boolean): void{
+    const task = this.data.taskSearchableColumns;
+    task.completed = completed;
+    if (task.subcategories == null) {
       return;
     }
-    this.data.taskSearchableColumns.subcategories.forEach(t => {
+    task.subcategories.forEach(t => {
       t.completed = completed;
       this.setFieldSearch(t.name, completed);
     });
+  }
+
+  setFieldDisplay(fieldName: string, makeVisible: boolean): void{
+    this.displayedColumnHolder.setFieldVisibility(fieldName, makeVisible);
+    this.displayAbleColumns = this.displayedColumnHolder.getFields();
   }
 
   setFieldSearch(fieldName: string, shouldAdd: boolean): void{
