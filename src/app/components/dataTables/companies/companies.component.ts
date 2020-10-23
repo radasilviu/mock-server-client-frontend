@@ -77,7 +77,6 @@ export class CompaniesComponent implements OnInit, OnDestroy {
   loadData(pageSize: number, pageIndex: number, filter: string, sortColumn: string, sortDirection: string,
            searchAbleColumns: string[]): void {
     this.isLoading = true;
-    console.log('Calling listing Companies');
     this.companyService
       .list(pageSize, pageIndex, filter, searchAbleColumns, sortColumn, sortDirection)
       .subscribe(
@@ -133,6 +132,7 @@ export class CompaniesComponent implements OnInit, OnDestroy {
     this.setSearchTermSubscription();
     this.setDisplayedColumnsSubscription();
     this.setSearchedColumnsSubscription();
+    this.setHasChangedSubscription();
   }
 
   private setSearchTermSubscription(): void{
@@ -151,6 +151,10 @@ export class CompaniesComponent implements OnInit, OnDestroy {
     this.filterService.searchAbleColumns.subscribe(searchedCol => {
       this.searchAbleColumns = searchedCol;
     });
+  }
+
+  private setHasChangedSubscription(): void{
+    this.filterService.hasChanged.subscribe(() =>  this.reloadData());
   }
 
   private setSearchTerm(term: string): void{

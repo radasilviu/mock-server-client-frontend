@@ -132,6 +132,7 @@ export class BooksComponent implements OnInit, OnDestroy {
     this.setSearchTermSubscription();
     this.setDisplayedColumnsSubscription();
     this.setSearchedColumnsSubscription();
+    this.setHasChangedSubscription();
   }
 
   private setSearchTermSubscription(): void{
@@ -150,6 +151,10 @@ export class BooksComponent implements OnInit, OnDestroy {
     this.filterService.searchAbleColumns.subscribe(searchedCol => {
       this.searchAbleColumns = searchedCol;
     });
+  }
+
+  private setHasChangedSubscription(): void{
+    this.filterService.hasChanged.subscribe(() =>  this.reloadData());
   }
 
   private setSearchTerm(term: string): void{

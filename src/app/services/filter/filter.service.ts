@@ -12,10 +12,13 @@ export class FilterService {
   searchAbleColumns = new Subject<string[]>();
   searchTerm = new Subject<string>();
 
+  hasChanged = new Subject();
+
   resetServiceObservers(): void{
     this.resetSearchTermObservers();
     this.resetDisplayableColumnsObservers();
     this.resetSearchableColumnsObservers();
+    this.resetHasChangedObservers();
   }
 
   private resetSearchTermObservers(): void{
@@ -28,5 +31,9 @@ export class FilterService {
 
   private resetSearchableColumnsObservers(): void{
     this.searchAbleColumns.observers.forEach(obs => obs.complete());
+  }
+
+  private resetHasChangedObservers(): void{
+    this.hasChanged.observers.forEach(obs => obs.complete());
   }
 }
