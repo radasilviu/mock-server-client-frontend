@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {FilterService} from '../../../services/filter/filter.service';
 import {Task} from '../../../models/task';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
@@ -28,6 +28,8 @@ export class FilterConfigComponent implements OnInit {
   ngOnInit(): void {
     this.displayedColumnHolder = this.getColumnHolderFromTask(this.data.taskDisplayableColumns, true);
     this.searchableColumnHolder = this.getColumnHolderFromTask(this.data.taskSearchableColumns, false);
+    this.checkIfAllDisplayable();
+    this.checkIfAllSearchable();
   }
 
   onSubmit(): void {
