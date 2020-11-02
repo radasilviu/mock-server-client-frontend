@@ -129,32 +129,33 @@ export class CompaniesComponent implements OnInit, OnDestroy {
   }
 
   private setSubscriptions(): void{
-    this.setSearchTermSubscription();
-    this.setDisplayedColumnsSubscription();
-    this.setSearchedColumnsSubscription();
-    this.setHasChangedSubscription();
-  }
+    const component = this;
 
-  private setSearchTermSubscription(): void{
-    this.filterService.searchTerm.pipe(
-      debounceTime(500),
-      distinctUntilChanged()).subscribe(searchTerm => this.setSearchTerm(searchTerm));
-  }
+    const searchTermObserver = {
+      next(searchTerm): void{
+        console.log('New searchTerm: company');
+        component.setSearchTerm(searchTerm);
+      }
+    };
 
-  private setDisplayedColumnsSubscription(): void{
-    this.filterService.displayAbleColumns.subscribe(displayedCol => {
-      this.displayedColumns = displayedCol;
-    });
-  }
+    const displayColumnsObserver = {
+      next(displayedCol): void{
+        console.log('Displaying columns');
+        component.displayedColumns = displayedCol;
+      }
+    };
 
-  private setSearchedColumnsSubscription(): void{
-    this.filterService.searchAbleColumns.subscribe(searchedCol => {
-      this.searchAbleColumns = searchedCol;
-    });
-  }
+    const searchColumnsObserver = {
+      next(searchedCol): void{
+        console.log('Searching columns');
+        component.searchAbleColumns = searchedCol;
+        component.reloadData();
+      }
+    };
 
-  private setHasChangedSubscription(): void{
-    this.filterService.hasChanged.subscribe(() =>  this.reloadData());
+    const observers = [searchTermObserver, displayColumnsObserver, searchColumnsObserver];
+
+    this.filterService.setSubscriptions(observers);
   }
 
   private setSearchTerm(term: string): void{

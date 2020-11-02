@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
+import {Observer, PartialObserver, Subject, Subscription} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,28 +13,30 @@ export class FilterService {
   searchAbleColumns = new Subject<string[]>();
   searchTerm = new Subject<string>();
 
-  hasChanged = new Subject();
+  subscriptions$ = new Subscription();
 
   resetServiceObservers(): void{
-    this.resetSearchTermObservers();
-    this.resetDisplayableColumnsObservers();
-    this.resetSearchableColumnsObservers();
-    this.resetHasChangedObservers();
+    this.subscriptions$.unsubscribe();
+    this.subscriptions$ = new Subscription();
   }
 
-  private resetSearchTermObservers(): void{
-    this.searchTerm.observers.forEach(obs => obs.complete());
+  setSubscriptions(observers: PartialObserver<any>[]): void{
+    this.setSearchTermSubscription(observers[0]);
+    this.setDisplayedColumnsSubscription(observers[1]);
+    this.setSearchedColumnsSubscription(observers[2]);
   }
 
-  private resetDisplayableColumnsObservers(): void{
-    this.displayAbleColumns.observers.forEach(obs => obs.complete());
+  private setSearchTermSubscription(obs: PartialObserver<any>): void{
+    this.subscriptions$.add(this.searchTerm.pipe(
+      debounceTime(500),
+      distinctUntilChanged()).subscribe(obs));
   }
 
-  private resetSearchableColumnsObservers(): void{
-    this.searchAbleColumns.observers.forEach(obs => obs.complete());
+  private setDisplayedColumnsSubscription(obs: PartialObserver<any>): void{
+    this.subscriptions$.add(this.displayAbleColumns.subscribe(obs));
   }
 
-  private resetHasChangedObservers(): void{
-    this.hasChanged.observers.forEach(obs => obs.complete());
+  private setSearchedColumnsSubscription(obs: PartialObserver<any>): void{
+    this.subscriptions$.add(this.searchAbleColumns.subscribe(obs));
   }
 }

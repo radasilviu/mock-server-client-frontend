@@ -11,12 +11,14 @@ import {ColumnHolder} from '../../../helpers/ColumnHolder/ColumnHolder';
 import { FilterSettings } from 'src/app/models/filterSettings';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {FilterService} from '../../../services/filter/filter.service';
+import {PartialObserver, Subscription} from 'rxjs';
+import {Filterable} from '../../../Filterable';
 
 @Component({
   selector: 'app-books',
   templateUrl: './books.component.html',
   styleUrls: ['./books.component.css']})
-export class BooksComponent implements OnInit, OnDestroy {
+export class BooksComponent implements OnInit, OnDestroy, Filterable {
 
   constructor(private bookService: BookService,
               private filterService: FilterService,
@@ -62,7 +64,7 @@ export class BooksComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
-    this.setSubscriptions();
+    this.setFilterSubscriptions();
   }
 
   ngOnDestroy(): void {
@@ -128,33 +130,38 @@ export class BooksComponent implements OnInit, OnDestroy {
       });
   }
 
-  private setSubscriptions(): void{
-    this.setSearchTermSubscription();
-    this.setDisplayedColumnsSubscription();
-    this.setSearchedColumnsSubscription();
-    this.setHasChangedSubscription();
-  }
+  private setFilterSubscriptions(): void{
+    const component = this;
 
-  private setSearchTermSubscription(): void{
-    this.filterService.searchTerm.pipe(
-      debounceTime(500),
-      distinctUntilChanged()).subscribe(searchTerm => this.setSearchTerm(searchTerm));
-  }
+    const searchTermObserver = getSearchTermObserver();
+    const displayColumnsObserver = getDisplayColumnsObserver();
+    const searchColumnsObserver = getSearchColumnsObserver();
+    const observers = [searchTermObserver, displayColumnsObserver, searchColumnsObserver];
 
-  private setDisplayedColumnsSubscription(): void{
-    this.filterService.displayAbleColumns.subscribe(displayedCol => {
-      this.displayedColumns = displayedCol;
-    });
-  }
+    this.filterService.setSubscriptions(observers);
 
-  private setSearchedColumnsSubscription(): void{
-    this.filterService.searchAbleColumns.subscribe(searchedCol => {
-      this.searchAbleColumns = searchedCol;
-    });
-  }
-
-  private setHasChangedSubscription(): void{
-    this.filterService.hasChanged.subscribe(() =>  this.reloadData());
+    function getSearchTermObserver(): PartialObserver<any>{
+      return {
+        next(searchTerm): void {
+          component.setSearchTerm(searchTerm);
+        }
+      };
+    }
+    function getDisplayColumnsObserver(): PartialObserver<any>{
+      return {
+        next(displayedCol): void{
+          component.displayedColumns = displayedCol;
+        }
+      };
+    }
+    function getSearchColumnsObserver(): PartialObserver<any>{
+      return {
+        next(searchedCol): void{
+          component.searchAbleColumns = searchedCol;
+          component.reloadData();
+        }
+      };
+    }
   }
 
   private setSearchTerm(term: string): void{
