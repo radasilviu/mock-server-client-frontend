@@ -1,5 +1,5 @@
 export interface Filterable{
-  displayedColumns: string[];
-  searchAbleColumns: string[];
-  searchTerm: string;
+  setDisplayableColumns(cols: string[]): void;
+  setSearchableColumns(cols: string[]): void;
+  setSearchTerm(term: string): void;
 }

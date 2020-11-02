@@ -62,7 +62,7 @@ export class CompaniesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
-    this.setSubscriptions();
+    this.filterService.setFilterSubscriptions(this);
   }
 
   ngOnDestroy(): void {
@@ -128,38 +128,17 @@ export class CompaniesComponent implements OnInit, OnDestroy {
       });
   }
 
-  private setSubscriptions(): void{
-    const component = this;
-
-    const searchTermObserver = {
-      next(searchTerm): void{
-        console.log('New searchTerm: company');
-        component.setSearchTerm(searchTerm);
-      }
-    };
-
-    const displayColumnsObserver = {
-      next(displayedCol): void{
-        console.log('Displaying columns');
-        component.displayedColumns = displayedCol;
-      }
-    };
-
-    const searchColumnsObserver = {
-      next(searchedCol): void{
-        console.log('Searching columns');
-        component.searchAbleColumns = searchedCol;
-        component.reloadData();
-      }
-    };
-
-    const observers = [searchTermObserver, displayColumnsObserver, searchColumnsObserver];
-
-    this.filterService.setSubscriptions(observers);
+  public setSearchTerm(term: string): void{
+    this.searchTerm = term;
+    this.reloadData();
   }
 
-  private setSearchTerm(term: string): void{
-    this.searchTerm = term;
+  public setDisplayableColumns(cols: string[]): void{
+    this.displayedColumns = cols;
+  }
+
+  public setSearchableColumns(cols: string[]): void{
+    this.searchAbleColumns = cols;
     this.reloadData();
   }
 

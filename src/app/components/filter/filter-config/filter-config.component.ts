@@ -30,18 +30,12 @@ export class FilterConfigComponent implements OnInit {
   }
 
   onSubmit(): void {
-    // let eitherFieldHasChanged = false;
     if (this.searchAbleColumns) {
       this.filterService.searchAbleColumns.next(this.searchAbleColumns);
-      // eitherFieldHasChanged = true;
     }
     if (this.displayAbleColumns) {
       this.filterService.displayAbleColumns.next(this.displayAbleColumns);
-      // eitherFieldHasChanged = true;
     }
-    // if (eitherFieldHasChanged) {
-    //   this.filterService.hasChanged.next();
-    // }
     this.dialogRef.close();
   }
 

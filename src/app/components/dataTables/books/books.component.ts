@@ -7,11 +7,8 @@ import {BookService} from '../../../services/book/book.service';
 import {MatDialog} from '@angular/material/dialog';
 import {EditBookComponent} from '../../dialogs/edit-book/edit-book.component';
 import {DeleteBookComponent} from '../../dialogs/delete-book/delete-book.component';
-import {ColumnHolder} from '../../../helpers/ColumnHolder/ColumnHolder';
 import { FilterSettings } from 'src/app/models/filterSettings';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {FilterService} from '../../../services/filter/filter.service';
-import {PartialObserver, Subscription} from 'rxjs';
 import {Filterable} from '../../../Filterable';
 
 @Component({
@@ -64,11 +61,25 @@ export class BooksComponent implements OnInit, OnDestroy, Filterable {
 
   ngOnInit(): void {
     this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
-    this.setFilterSubscriptions();
+    this.filterService.setFilterSubscriptions(this);
   }
 
   ngOnDestroy(): void {
     this.filterService.resetServiceObservers();
+  }
+
+  setSearchTerm(term: string): void{
+    this.searchTerm = term;
+    this.reloadData();
+  }
+
+  setDisplayableColumns(cols: string[]): void{
+    this.displayedColumns = cols;
+  }
+
+  setSearchableColumns(cols: string[]): void{
+    this.searchAbleColumns = cols;
+    this.reloadData();
   }
 
   loadData(pageSize: number, pageIndex: number, filter: string, sortColumn: string, sortDirection: string,
@@ -128,45 +139,6 @@ export class BooksComponent implements OnInit, OnDestroy, Filterable {
       .subscribe(response => {
         this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
       });
-  }
-
-  private setFilterSubscriptions(): void{
-    const component = this;
-
-    const searchTermObserver = getSearchTermObserver();
-    const displayColumnsObserver = getDisplayColumnsObserver();
-    const searchColumnsObserver = getSearchColumnsObserver();
-    const observers = [searchTermObserver, displayColumnsObserver, searchColumnsObserver];
-
-    this.filterService.setSubscriptions(observers);
-
-    function getSearchTermObserver(): PartialObserver<any>{
-      return {
-        next(searchTerm): void {
-          component.setSearchTerm(searchTerm);
-        }
-      };
-    }
-    function getDisplayColumnsObserver(): PartialObserver<any>{
-      return {
-        next(displayedCol): void{
-          component.displayedColumns = displayedCol;
-        }
-      };
-    }
-    function getSearchColumnsObserver(): PartialObserver<any>{
-      return {
-        next(searchedCol): void{
-          component.searchAbleColumns = searchedCol;
-          component.reloadData();
-        }
-      };
-    }
-  }
-
-  private setSearchTerm(term: string): void{
-    this.searchTerm = term;
-    this.reloadData();
   }
 
   private reloadData(): void{
