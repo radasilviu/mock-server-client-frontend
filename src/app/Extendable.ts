@@ -1,10 +1,18 @@
-export class Extendable{
+import {OnInit} from '@angular/core';
+import {Filterable} from './Filterable';
+import {EntityService} from './services/entity/entity.service';
+
+export class Extendable implements OnInit, Filterable{
   displayedColumns: string[];
   searchAbleColumns: string[];
   searchTerm: string;
 
-  constructor(input: string){
+  constructor(private entityService: EntityService){
+  console.log('bruh');
+  }
 
+  ngOnInit(): void{
+    console.log('Hi');
   }
 
   setSearchTerm(term: string): void{
