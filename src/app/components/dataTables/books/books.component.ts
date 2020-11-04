@@ -7,23 +7,26 @@ import {BookService} from '../../../services/book/book.service';
 import {MatDialog} from '@angular/material/dialog';
 import {EditBookComponent} from '../../dialogs/edit-book/edit-book.component';
 import {DeleteBookComponent} from '../../dialogs/delete-book/delete-book.component';
-import { FilterSettings } from 'src/app/models/filterSettings';
+import {FilterSettings} from 'src/app/models/filterSettings';
 import {FilterService} from '../../../services/filter/filter.service';
 import {Filterable} from '../../../Filterable';
+import {Extendable} from '../../../Extendable';
 
 @Component({
   selector: 'app-books',
   templateUrl: './books.component.html',
   styleUrls: ['./books.component.css']})
-export class BooksComponent implements OnInit, OnDestroy, Filterable {
+export class BooksComponent extends Extendable implements OnInit, OnDestroy, Filterable{
 
   constructor(private bookService: BookService,
               private filterService: FilterService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog) {
+    super("testINPUT");
+  }
 
-  displayedColumns: string[] = ['title', 'category', 'price', 'actions'];
-  searchAbleColumns: string[] = ['title', 'category'];
-  searchTerm: string;
+  displayedColumns = ['title', 'category', 'price', 'actions'];
+  searchAbleColumns = ['title', 'category'];
+  // searchTerm: string;
 
   taskDisplayableColumns: FilterSettings = {
     name: 'Fields to display',
@@ -68,19 +71,19 @@ export class BooksComponent implements OnInit, OnDestroy, Filterable {
     this.filterService.resetServiceObservers();
   }
 
-  setSearchTerm(term: string): void{
-    this.searchTerm = term;
-    this.reloadData();
-  }
-
-  setDisplayableColumns(cols: string[]): void{
-    this.displayedColumns = cols;
-  }
-
-  setSearchableColumns(cols: string[]): void{
-    this.searchAbleColumns = cols;
-    this.reloadData();
-  }
+  // setSearchTerm(term: string): void{
+  //   this.searchTerm = term;
+  //   this.reloadData();
+  // }
+  //
+  // setDisplayableColumns(cols: string[]): void{
+  //   this.displayedColumns = cols;
+  // }
+  //
+  // setSearchableColumns(cols: string[]): void{
+  //   this.searchAbleColumns = cols;
+  //   this.reloadData();
+  // }
 
   loadData(pageSize: number, pageIndex: number, filter: string, sortColumn: string, sortDirection: string,
            searchAbleColumns: string[]): void {
@@ -141,7 +144,7 @@ export class BooksComponent implements OnInit, OnDestroy, Filterable {
       });
   }
 
-  private reloadData(): void{
-    this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
-  }
+  // private reloadData(): void{
+  //   this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
+  // }
 }
