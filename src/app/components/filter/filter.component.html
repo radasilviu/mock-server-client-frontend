@@ -1,0 +1,16 @@
+<div class="m-1">
+  <div class="float-right">
+    <div class="float-right m-2">
+      <span class="material-icons float-right" (click)="openConfiguration()">
+      tune
+      </span>
+    </div>
+    <div class="custom-control-inline float-right">
+      <mat-form-field>
+        <mat-label>Filter <mat-icon>filter_alt</mat-icon>
+        </mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Google" #input>
+      </mat-form-field>
+    </div>
+  </div>
+</div>
