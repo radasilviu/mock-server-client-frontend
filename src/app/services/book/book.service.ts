@@ -5,13 +5,16 @@ import {Env} from '../../configs/env';
 import {catchError} from 'rxjs/operators';
 import {Observable, throwError} from 'rxjs';
 import {Book} from '../../models/book';
+import {EntityService} from '../entity/entity.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class BookService {
+export class BookService extends EntityService{
 
-  constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
+  constructor(private http: HttpClient, private snackBar: MatSnackBar) {
+    super();
+  }
 
   list(limit: number, pageIndex: number, filter: string = '', columns: string[], sortColumn: string, sortDirection: string): any {
     const data = {
