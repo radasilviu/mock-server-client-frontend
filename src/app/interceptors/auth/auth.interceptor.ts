@@ -39,7 +39,6 @@ export class AuthInterceptor implements HttpInterceptor {
               },
             ),
             catchError(error => {
-              console.log(error);
               this.tokenService.logout().subscribe();
               return EMPTY;
             })
@@ -62,11 +61,10 @@ export class AuthInterceptor implements HttpInterceptor {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${token.access_token}`,
         'Resource': `${resource}`,
-        'Request_Type':  `${requestType}`
+        'Request_Type': `${requestType}`
 
       })
     }
-    console.log(opts)
     return request.clone(
       opts
     );
