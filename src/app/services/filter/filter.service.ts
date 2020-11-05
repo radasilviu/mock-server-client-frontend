@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {PartialObserver, Subject, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {Filterable} from '../../Filterable';
+import {Filterable} from '../../models/Filterable';
 
 @Injectable({
   providedIn: 'root'
