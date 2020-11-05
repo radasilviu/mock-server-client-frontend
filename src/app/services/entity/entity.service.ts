@@ -3,17 +3,16 @@ import {catchError} from 'rxjs/operators';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Observable, throwError} from 'rxjs';
-import {Book} from '../../models/book';
 
 const rootUrl = Env.resourceServerRootURL;
 
-export class EntityService {
+export class EntityService<T> {
 
   baseUrl: string;
 
-  constructor(private apiUrlExtension: string,
-              private http: HttpClient,
-              private snackBar: MatSnackBar) {
+  constructor(protected apiUrlExtension: string,
+              protected http: HttpClient,
+              protected snackBar: MatSnackBar) {
     this.baseUrl = rootUrl + apiUrlExtension;
   }
 
@@ -35,8 +34,8 @@ export class EntityService {
       );
   }
 
-  delete(bookId: string): Observable<any> {
-    const url =  this.baseUrl + `/${bookId}`;
+  delete(entityId: string): Observable<any> {
+    const url =  this.baseUrl + `/${entityId}`;
 
     return this.http.delete(url)
       .pipe(
@@ -46,10 +45,11 @@ export class EntityService {
       );
   }
 
-  update(bookId: string, book: Book): Observable<any> {
-    const url =  this.baseUrl + `/update/${bookId}`;
+  // I'd rather not use any here in the future
+  update(entityId: any, entity: T): Observable<any> {
+    const url =  this.baseUrl + `/update/${entityId}`;
 
-    return this.http.put(url, book)
+    return this.http.put(url, entity)
       .pipe(
         catchError(error => {
           return this.handleError(error, this.snackBar);
