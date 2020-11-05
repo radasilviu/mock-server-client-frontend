@@ -1,21 +1,22 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
-import {Book} from '../../models/book';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort, Sort} from '@angular/material/sort';
-import {EditBookComponent} from '../dialogs/edit-book/edit-book.component';
-import {DeleteBookComponent} from '../dialogs/delete-book/delete-book.component';
 import {FilterService} from '../../services/filter/filter.service';
 import {EntityService} from '../../services/entity/entity.service';
 import {MatDialog} from '@angular/material/dialog';
+import {Filterable} from '../../models/Filterable';
+import {ComponentType} from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-pagination',
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.css']
 })
-export class PaginationComponent<T> implements OnInit, OnDestroy {
+export class PaginationComponent<T> implements OnInit, OnDestroy, Filterable {
 
+  editComponent: ComponentType<unknown>;
+  deleteDialogComponent: ComponentType<unknown>;
   displayedColumns: string[];
   searchAbleColumns: string[];
   searchTerm = '';
@@ -24,9 +25,9 @@ export class PaginationComponent<T> implements OnInit, OnDestroy {
               private entityService: EntityService<T>,
               private dialog: MatDialog) { }
 
-  sortColumn = 'title';
+  sortColumn: string;
   sortDirection = 'asc';
-  dataSource: MatTableDataSource<Book>;
+  dataSource: MatTableDataSource<T>;
 
   length: number;
   pageSize = 100;
@@ -61,7 +62,7 @@ export class PaginationComponent<T> implements OnInit, OnDestroy {
   }
 
   loadData(pageSize: number, pageIndex: number, filter: string, sortColumn: string, sortDirection: string,
-           searchAbleColumns: string[]): void {
+           searchAbleColumns: string[]): void{
     this.isLoading = true;
     this.entityService
       .list(pageSize, pageIndex, filter, searchAbleColumns, sortColumn, sortDirection)
@@ -74,20 +75,20 @@ export class PaginationComponent<T> implements OnInit, OnDestroy {
       );
   }
 
-  changePage(event): void {
+  changePage(event): void{
     this.pageSize = event.pageSize;
     this.reloadData();
   }
 
-  sortData(sort: Sort): void {
+  sortData(sort: Sort): void{
     this.sortColumn = sort.active;
     this.sortDirection = sort.direction;
     this.reloadData();
   }
 
-  openEditBookDialog(book: Book): void {
-    const dialogRef = this.dialog.open(EditBookComponent, {
-      data: { book }
+  openEditDialog(entity: T): void{
+    const dialogRef = this.dialog.open(this.editComponent, {
+      data: { entity }
     });
     dialogRef.afterClosed().subscribe(
       confirm => {
@@ -98,20 +99,20 @@ export class PaginationComponent<T> implements OnInit, OnDestroy {
     );
   }
 
-  confirmDeleteDialog(book): void {
-    const dialogRef = this.dialog.open(DeleteBookComponent, {
-      data: { book }
+  openDeleteDialog(entity: T): void{
+    const dialogRef = this.dialog.open(this.deleteDialogComponent, {
+      data: { entity }
     });
     dialogRef.afterClosed().subscribe(
       confirm => {
         if (confirm) {
-          this.delete(book);
+          this.delete(entity);
         }
       }
     );
   }
 
-  delete(data): void {
+  delete(data): void{
     this.entityService
       .delete(data.id)
       .subscribe(() => {
@@ -119,7 +120,7 @@ export class PaginationComponent<T> implements OnInit, OnDestroy {
       });
   }
 
-  private reloadData(): void{
+  protected reloadData(): void{
     this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
   }
 }
