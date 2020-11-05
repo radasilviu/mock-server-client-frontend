@@ -33,6 +33,7 @@ import {DeleteBookComponent} from './components/dialogs/delete-book/delete-book.
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {FilterComponent} from './components/filter/filter.component';
 import { FilterConfigComponent } from './components/filter/filter-config/filter-config.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { FilterConfigComponent } from './components/filter/filter-config/filter-
     EditBookComponent,
     DeleteBookComponent,
     FilterComponent,
-    FilterConfigComponent
+    FilterConfigComponent,
+    PaginationComponent
   ],
   imports: [
     HttpClientModule,
