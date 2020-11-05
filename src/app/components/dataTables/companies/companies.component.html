@@ -26,10 +26,10 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Actions </th>
       <td mat-cell *matCellDef="let row">
-        <button mat-raised-button color="primary" (click)="openEditCompanyDialog(row)">
+        <button mat-raised-button color="primary" (click)="openEditDialog(row)">
           Edit <mat-icon>edit</mat-icon>
         </button>
-        <button mat-raised-button color="warn" (click)="confirmDeleteDialog(row)">
+        <button mat-raised-button color="warn" (click)="openDeleteDialog(row)">
           Delete <mat-icon>delete</mat-icon>
         </button>
 
