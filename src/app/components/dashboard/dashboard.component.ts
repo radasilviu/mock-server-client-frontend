@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {DashboardService} from '../../services/dashboard/dashboard.service';
 
 @Component({
@@ -8,7 +8,8 @@ import {DashboardService} from '../../services/dashboard/dashboard.service';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private service: DashboardService) { }
+  constructor(private service: DashboardService) {
+  }
 
   secret: string;
 
@@ -17,8 +18,6 @@ export class DashboardComponent implements OnInit {
   }
 
   private setSecret(): void {
-    localStorage.setItem("requestType","GET")
-    localStorage.setItem("resource","public")
 
     this.service
       .getSecret()

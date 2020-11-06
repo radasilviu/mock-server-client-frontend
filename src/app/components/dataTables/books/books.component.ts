@@ -61,7 +61,6 @@ export class BooksComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   ngOnInit(): void {
-    localStorage.setItem('resource', 'books');
     this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
     this.setSubscriptions();
   }
@@ -72,7 +71,6 @@ export class BooksComponent implements OnInit, OnDestroy {
 
   loadData(pageSize: number, pageIndex: number, filter: string, sortColumn: string, sortDirection: string,
            searchAbleColumns: string[]): void {
-    localStorage.setItem('requestType', 'GET');
     this.isLoading = true;
     this.bookService
       .list(pageSize, pageIndex, filter, searchAbleColumns, sortColumn, sortDirection)
@@ -97,7 +95,6 @@ export class BooksComponent implements OnInit, OnDestroy {
   }
 
   openEditBookDialog(book: Book): void {
-    localStorage.setItem('requestType', 'PUT');
 
     const dialogRef = this.dialog.open(EditBookComponent, {
       data: {book}
@@ -126,8 +123,6 @@ export class BooksComponent implements OnInit, OnDestroy {
   }
 
   delete(data): void {
-    localStorage.setItem('requestType', 'DELETE');
-
     this.bookService
       .delete(data.id)
       .subscribe(response => {

@@ -58,10 +58,10 @@ export class CompaniesComponent implements OnInit, OnDestroy {
 
   constructor(private companyService: CompanyService,
               private  filterService: FilterService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
-    localStorage.setItem('resource', 'companies');
     this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
     this.setSubscriptions();
   }
@@ -77,7 +77,6 @@ export class CompaniesComponent implements OnInit, OnDestroy {
 
   loadData(pageSize: number, pageIndex: number, filter: string, sortColumn: string, sortDirection: string,
            searchAbleColumns: string[]): void {
-    localStorage.setItem('requestType', 'GET');
     this.isLoading = true;
     this.companyService
       .list(pageSize, pageIndex, filter, searchAbleColumns, sortColumn, sortDirection)
@@ -98,10 +97,9 @@ export class CompaniesComponent implements OnInit, OnDestroy {
 
 
   openEditCompanyDialog(company): void {
-    localStorage.setItem('requestType', 'PUT');
 
     const dialogRef = this.dialog.open(EditCompanyComponent, {
-      data: { company}
+      data: {company}
     });
     dialogRef.afterClosed().subscribe(
       confirm => {
@@ -114,7 +112,7 @@ export class CompaniesComponent implements OnInit, OnDestroy {
 
   confirmDeleteDialog(company): void {
     const dialogRef = this.dialog.open(DeleteCompanyComponent, {
-      data: { company}
+      data: {company}
     });
     dialogRef.afterClosed().subscribe(
       confirm => {
@@ -126,7 +124,6 @@ export class CompaniesComponent implements OnInit, OnDestroy {
   }
 
   delete(data): void {
-    localStorage.setItem('requestType', 'DELETE');
     this.companyService
       .delete(data.id)
       .subscribe(response => {
@@ -134,41 +131,41 @@ export class CompaniesComponent implements OnInit, OnDestroy {
       });
   }
 
-  private setSubscriptions(): void{
+  private setSubscriptions(): void {
     this.setSearchTermSubscription();
     this.setDisplayedColumnsSubscription();
     this.setSearchedColumnsSubscription();
     this.setHasChangedSubscription();
   }
 
-  private setSearchTermSubscription(): void{
+  private setSearchTermSubscription(): void {
     this.filterService.searchTerm.pipe(
       debounceTime(500),
       distinctUntilChanged()).subscribe(searchTerm => this.setSearchTerm(searchTerm));
   }
 
-  private setDisplayedColumnsSubscription(): void{
+  private setDisplayedColumnsSubscription(): void {
     this.filterService.displayAbleColumns.subscribe(displayedCol => {
       this.displayedColumns = displayedCol;
     });
   }
 
-  private setSearchedColumnsSubscription(): void{
+  private setSearchedColumnsSubscription(): void {
     this.filterService.searchAbleColumns.subscribe(searchedCol => {
       this.searchAbleColumns = searchedCol;
     });
   }
 
-  private setHasChangedSubscription(): void{
-    this.filterService.hasChanged.subscribe(() =>  this.reloadData());
+  private setHasChangedSubscription(): void {
+    this.filterService.hasChanged.subscribe(() => this.reloadData());
   }
 
-  private setSearchTerm(term: string): void{
+  private setSearchTerm(term: string): void {
     this.searchTerm = term;
     this.reloadData();
   }
 
-  private reloadData(): void{
+  private reloadData(): void {
     this.loadData(this.pageSize, this.pageIndex, this.searchTerm, this.sortColumn, this.sortDirection, this.searchAbleColumns);
   }
 }
