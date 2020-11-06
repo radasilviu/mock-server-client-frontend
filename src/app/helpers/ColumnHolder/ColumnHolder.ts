@@ -8,15 +8,19 @@ export class ColumnHolder{
   }
 
   setFieldVisibility(fieldName: string, setVisible: boolean): void{
-    const fieldIndex: number = this.template.indexOf(fieldName);
-    if (fieldIndex === -1) {
-        throw new Error('There is no field with value ' + fieldName + ' inside template: [ ' + this.template + ' ]');
-    }
+    this.checkFieldExists(fieldName);
     if (setVisible) {
       this.setVisible(fieldName);
     }
     else {
       this.setInvisible(fieldName);
+    }
+  }
+
+  private checkFieldExists(fieldName: string): void{
+    const fieldIndex: number = this.template.indexOf(fieldName);
+    if (fieldIndex === -1) {
+      throw new Error('There is no field with value ' + fieldName + ' inside template: [ ' + this.template + ' ]');
     }
   }
 

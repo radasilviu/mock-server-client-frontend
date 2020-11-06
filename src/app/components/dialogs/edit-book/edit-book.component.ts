@@ -16,11 +16,11 @@ export class EditBookComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private bookService: BookService) { }
 
   ngOnInit(): void {
-    this.bookId = this.data.book.id;
+    this.bookId = this.data.entity.id;
     this.editBookForm = new FormGroup({
-      author: new FormControl(this.data.book.author, [ Validators.required]),
-      price: new FormControl(this.data.book.price, [ Validators.required]),
-      title: new FormControl(this.data.book.title, [ Validators.required])
+      author: new FormControl(this.data.entity.author, [ Validators.required]),
+      price: new FormControl(this.data.entity.price, [ Validators.required]),
+      title: new FormControl(this.data.entity.title, [ Validators.required])
     });
   }
 

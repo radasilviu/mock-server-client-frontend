@@ -1,5 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {Task} from '../../models/task';
+import {FilterSettings} from '../../models/filterSettings';
 import {FilterService} from '../../services/filter/filter.service';
 import {MatDialog} from '@angular/material/dialog';
 import {FilterConfigComponent} from './filter-config/filter-config.component';
@@ -15,8 +15,8 @@ export class FilterComponent implements OnInit {
   constructor(private filterService: FilterService,
               public dialog: MatDialog) { }
 
-  @Input() taskDisplayableColumns: Task;
-  @Input() taskSearchableColumns: Task;
+  @Input() taskDisplayableColumns: FilterSettings;
+  @Input() taskSearchableColumns: FilterSettings;
 
   ngOnInit(): void {
   }

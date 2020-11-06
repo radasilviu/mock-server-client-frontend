@@ -1,8 +1,8 @@
 import {ThemePalette} from '@angular/material/core';
 
-export interface Task {
+export interface FilterSettings {
   name: string;
   completed: boolean;
   color: ThemePalette;
-  subcategories?: Task[];
+  subcategories?: FilterSettings[];
 }

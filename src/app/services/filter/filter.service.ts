@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
+import {PartialObserver, Subject, Subscription} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Filterable} from '../../models/Filterable';
 
 @Injectable({
   providedIn: 'root'
@@ -12,28 +14,59 @@ export class FilterService {
   searchAbleColumns = new Subject<string[]>();
   searchTerm = new Subject<string>();
 
-  hasChanged = new Subject();
+  subscriptions$ = new Subscription();
 
   resetServiceObservers(): void{
-    this.resetSearchTermObservers();
-    this.resetDisplayableColumnsObservers();
-    this.resetSearchableColumnsObservers();
-    this.resetHasChangedObservers();
+    this.subscriptions$.unsubscribe();
+    this.subscriptions$ = new Subscription();
   }
 
-  private resetSearchTermObservers(): void{
-    this.searchTerm.observers.forEach(obs => obs.complete());
-  }
+  public setFilterSubscriptions(parentComponent: Filterable): void{
+    const filterComponent = this;
+    const searchTermObserver = getSearchTermObserver();
+    const displayColumnsObserver = getDisplayColumnsObserver();
+    const searchColumnsObserver = getSearchColumnsObserver();
 
-  private resetDisplayableColumnsObservers(): void{
-    this.displayAbleColumns.observers.forEach(obs => obs.complete());
-  }
+    setSearchTermSubscription(searchTermObserver);
+    setDisplayedColumnsSubscription(displayColumnsObserver);
+    setSearchedColumnsSubscription(searchColumnsObserver);
 
-  private resetSearchableColumnsObservers(): void{
-    this.searchAbleColumns.observers.forEach(obs => obs.complete());
-  }
+    function getSearchTermObserver(): PartialObserver<any>{
+      return {
+        next(searchTerm): void {
+          parentComponent.setSearchTerm(searchTerm);
+        }
+      };
+    }
 
-  private resetHasChangedObservers(): void{
-    this.hasChanged.observers.forEach(obs => obs.complete());
+    function getDisplayColumnsObserver(): PartialObserver<any>{
+      return {
+        next(displayedCol): void{
+          parentComponent.setDisplayableColumns(displayedCol);
+        }
+      };
+    }
+
+    function getSearchColumnsObserver(): PartialObserver<any>{
+      return {
+        next(searchedCol): void{
+          parentComponent.setSearchableColumns(searchedCol);
+        }
+      };
+    }
+
+    function setSearchTermSubscription(obs: PartialObserver<any>): void{
+      filterComponent.subscriptions$.add(filterComponent.searchTerm.pipe(
+        debounceTime(500),
+        distinctUntilChanged()).subscribe(obs));
+    }
+
+    function setDisplayedColumnsSubscription(obs: PartialObserver<any>): void{
+      filterComponent.subscriptions$.add(filterComponent.displayAbleColumns.subscribe(obs));
+    }
+
+    function setSearchedColumnsSubscription(obs: PartialObserver<any>): void{
+      filterComponent.subscriptions$.add(filterComponent.searchAbleColumns.subscribe(obs));
+    }
   }
 }

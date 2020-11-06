@@ -16,7 +16,7 @@ export class EditCompanyComponent implements OnInit {
 
   ngOnInit(): void {
     this.editCompanyForm = new FormGroup({
-      name: new FormControl(this.data.company.name, [ Validators.required])
+      name: new FormControl(this.data.entity.name, [ Validators.required])
     });
   }
 
@@ -26,7 +26,7 @@ export class EditCompanyComponent implements OnInit {
 
   onSubmit(): void {
     this.companyService
-      .update(this.editCompanyForm.value, this.data.company.id)
+      .update(this.data.entity.id, this.editCompanyForm.value)
       .subscribe();
   }
 }
